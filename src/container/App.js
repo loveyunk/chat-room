@@ -1,16 +1,37 @@
 import React from 'react';
+import CssBaseline from 'material-ui/CssBaseline';
 
-import styles from './App.less';
+import {connect} from 'react-redux';
+import * as actionCreators from 'actions/actionCreators';
+import {bindActionCreators} from 'redux';
+
+import LoginForm from 'components/LoginForm';
 
 class App extends React.Component {
 
     render() {
+
+        const renderDom = this.props.username ? '' : <LoginForm {...this.props}/>;
+
         return (
-            <div className={styles.box}>
-                this is a test.
-            </div>
+            <React.Fragment>
+                <CssBaseline/>
+                {renderDom}
+            </React.Fragment>
         );
     }
 }
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        username: state.commonReducer.username
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        actions: bindActionCreators(actionCreators, dispatch)
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
