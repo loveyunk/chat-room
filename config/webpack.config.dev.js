@@ -93,9 +93,11 @@ module.exports = {
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
         '@': resolve('src'),
+        'api': resolve('src/api'),
         'styles': resolve('src/styles'),
         'containers': resolve('src/containers'),
         'components': resolve('src/components'),
+        'router': resolve('src/router'),
         'utils': resolve('src/utils'),
         'store': resolve('src/store'),
         'actions': resolve('src/actions'),
@@ -178,7 +180,7 @@ module.exports = {
                 loader: require.resolve('css-loader'),
                 options: {
                   importLoaders: 1,
-                    modules: false // 开启css modules
+                    modules: true // 开启css modules
                 },
               },
               {

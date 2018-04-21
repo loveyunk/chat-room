@@ -6,12 +6,13 @@ import * as actionCreators from 'actions/actionCreators';
 import {bindActionCreators} from 'redux';
 
 import LoginForm from 'components/LoginForm';
+import ChatRoom from 'components/ChatRoom';
 
 class App extends React.Component {
 
     render() {
 
-        const renderDom = this.props.username ? '' : <LoginForm {...this.props}/>;
+        const renderDom = this.props.username ? <ChatRoom /> : <LoginForm {...this.props}/>;
 
         return (
             <React.Fragment>

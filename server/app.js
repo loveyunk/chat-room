@@ -4,6 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -24,6 +26,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+
+// socket.io
+io.on('connection', function(socket){
+    console.log('a user connected');
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,28 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
+import Paper from 'material-ui/Paper';
+// import {LinearProgress} from 'material-ui/Progress';
+import {login} from 'api/user';
+import io from 'socket.io-client';
 
-const styles = theme => ({
-    container: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '55vh'
-    },
-    content: {
-        width: '400px'
-        // border: '1px solid #efefef'
-    },
-    form: {
-        marginTop: '20px',
-        textAlign: 'center'
-    }
-});
+import styles from './style.less';
 
 class LoginForm extends React.Component {
 
@@ -35,18 +20,31 @@ class LoginForm extends React.Component {
     }
 
     handleLogin() {
-        if (this.state.username) {
-
-            const userObj = {
-                username: this.state.username
-            };
-
-            this.props.actions.setUserInfo(userObj);
-        } else {
-            this.setState({
-                usernameError: true
-            });
-        }
+        // $('form').submit(function(){
+        //     socket.emit('chat message', $('#m').val());
+        //     $('#m').val('');
+        //     return false;
+        // });
+        // socket.on('chat message', function(msg){
+        //     $('#messages').append($('<li>').text(msg));
+        // });
+        // io.emit('chat message', '');
+        var socket = io('http://localhost:3000/');
+        // login({username: 'tom', password: '123'}).then(res => {
+        //     console.log(res);
+        // });
+        // if (this.state.username) {
+        //
+        //     const userObj = {
+        //         username: this.state.username
+        //     };
+        //
+        //     this.props.actions.setUserInfo(userObj);
+        // } else {
+        //     this.setState({
+        //         usernameError: true
+        //     });
+        // }
     }
 
     handleChange = value => event => {
@@ -58,43 +56,48 @@ class LoginForm extends React.Component {
 
     render() {
 
-        const {classes} = this.props;
-
         const {usernameError} = this.state;
 
         return (
-            <div className={classes.container}>
-                <div className={classes.content}>
-                    <AppBar position="static" color="primary">
-                        <Toolbar>
-                            <Typography variant="title" color="inherit">
-                                Chat Room
-                            </Typography>
-                        </Toolbar>
-                    </AppBar>
-                    <div className={classes.form}>
-                        <TextField
-                            error={usernameError}
-                            label="Input your username"
-                            onChange={this.handleChange('username')}
-                            fullWidth={true}/>
-                        <div className={'mt20'}/>
+            <div className={styles.container}>
+                <Paper className={styles.paper} elevation={4}>
+                    {/*<LinearProgress />*/}
+                    <Typography variant="title" color="inherit">
+                        Chat Room
+                    </Typography>
+                    <TextField
+                        className={styles.textField}
+                        error={usernameError}
+                        label="请输入您的用户名"
+                        onChange={this.handleChange('username')}
+                        fullWidth={true}/>
+                    <TextField
+                        className={styles.textField}
+                        error={usernameError}
+                        label="请输入您密码"
+                        onChange={this.handleChange('password')}
+                        fullWidth={true}/>
+                    <div className={'mt30'}/>
+                    <div className={styles.buttonWrapper}>
                         <Button variant="raised"
                                 color={"primary"}
                                 onClick={this.handleLogin.bind(this)}
                                 fullWidth={false}
-                                className={classes.button}>
-                            ENTER
+                                className={'button'}>
+                            登录
+                        </Button>
+                        <Button variant="raised"
+                                color={"primary"}
+                                // onClick={this.handleLogin.bind(this)}
+                                fullWidth={false}
+                                className={'button'}>
+                            注册
                         </Button>
                     </div>
-                </div>
+                </Paper>
             </div>
         );
     }
 }
 
-LoginForm.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(LoginForm);
+export default LoginForm;
