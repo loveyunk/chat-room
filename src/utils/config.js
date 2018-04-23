@@ -1,7 +1,9 @@
 export default {
-    BASE_URL: 'http://localhost:8088/api',
+    BASE_URL: '',
     ERR_OK: 0,
+    logo: '/logo.jpg',
     api: {
-        loginApi: '/user/login'
+        loginApi: '/user/login',
+        registerApi: '/user/register'
     }
 };
