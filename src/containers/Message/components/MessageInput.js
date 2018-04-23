@@ -54,7 +54,7 @@ class MessageInput extends React.Component {
                 <TextField
                     // label="Multiline"
                     multiline
-                    rows={10}
+                    rows={5}
                     rowsMax={60}
                     fullWidth
                     onKeyPress={this.handleKeyPress}
