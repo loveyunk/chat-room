@@ -24,6 +24,10 @@ class MessageInput extends React.Component {
             };
 
             this.props.socket.emit('updateMessages', messageObj);
+
+            this.setState({
+                message: ''
+            });
         }
     };
 
@@ -52,13 +56,13 @@ class MessageInput extends React.Component {
         return (
             <div className={styles.container}>
                 <TextField
-                    // label="Multiline"
                     multiline
                     rows={5}
                     rowsMax={60}
                     fullWidth
+                    className={styles.textField}
                     onKeyPress={this.handleKeyPress}
-                    // value={this.state.multiline}
+                    value={this.state.message}
                     onChange={this.handleChange('message')}
                 />
             </div>

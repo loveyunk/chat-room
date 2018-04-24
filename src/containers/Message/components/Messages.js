@@ -1,4 +1,6 @@
 import React from 'react';
+import classnames from 'classnames';
+import styles from './Messages.less';
 
 class Messages extends React.Component {
 
@@ -22,18 +24,18 @@ class Messages extends React.Component {
                 }
 
                 messageElement.push(<div key={index}
-                                         className="message system-message"> {`${message.username} ${systemMsg}`} </div>);
+                                         className={classnames(styles.message, styles.systemMessage)}> {`${message.username} ${systemMsg}`} </div>);
             } else {
                 if (message.uid === this.props.uid) {
                     messageElement.push(
-                        <div key={index} className="message message-right">
+                        <div key={index} className={classnames(styles.message, styles.messageRight)}>
                             <div className="message-time"> {message.time} </div>
                             <div className="message-content"> {message.content} </div>
                         </div>
                     );
                 } else {
                     messageElement.push(
-                        <div key={index} className="message message-left">
+                        <div key={index} className={classnames(styles.message, styles.messageLeft)}>
                             <div className="message-user"> {`${message.username}:`} </div>
                             <div className="message-content"> {message.content} </div>
                             <div className="message-time"> {message.time} </div>
@@ -44,7 +46,7 @@ class Messages extends React.Component {
         }
 
         return (
-            <div>
+            <div className={styles.container}>
                 {messageElement}
             </div>
         );
