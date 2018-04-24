@@ -1,18 +1,18 @@
 import React from 'react';
+import {Link} from "react-router";
 import Avatar from 'material-ui/Avatar';
 import Typography from 'material-ui/Typography';
 import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
 import InboxIcon from '@material-ui/icons/Inbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-import green from 'material-ui/colors/green';
 import Icon from 'material-ui/Icon';
 import styles from './style.less';
 
 class Sidebar extends React.Component {
 
     render() {
+
+        const {username} = this.props;
+
         return (
             <div className={styles.container}>
                 <Avatar
@@ -21,7 +21,7 @@ class Sidebar extends React.Component {
                     className={styles.avatar}
                 />
                 <Typography variant="headline" gutterBottom>
-                    Jerrn marray
+                    {username}
                 </Typography>
                 <Typography variant="subheading" gutterBottom>
                     Subheading
@@ -33,22 +33,26 @@ class Sidebar extends React.Component {
                         </ListItemIcon>
                         <ListItemText primary="Homepage"/>
                     </ListItem>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <Icon color="error">
-                                account_circle
-                            </Icon>
-                        </ListItemIcon>
-                        <ListItemText primary="Profile"/>
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <Icon color="secondary">
-                                question_answer
-                            </Icon>
-                        </ListItemIcon>
-                        <ListItemText primary="Message"/>
-                    </ListItem>
+                    <Link to="/profile">
+                        <ListItem button>
+                            <ListItemIcon>
+                                <Icon color="error">
+                                    account_circle
+                                </Icon>
+                            </ListItemIcon>
+                            <ListItemText primary="Profile"/>
+                        </ListItem>
+                    </Link>
+                    <Link to="/">
+                        <ListItem button>
+                            <ListItemIcon>
+                                <Icon color="secondary">
+                                    question_answer
+                                </Icon>
+                            </ListItemIcon>
+                            <ListItemText primary="Message"/>
+                        </ListItem>
+                    </Link>
                     <ListItem button>
                         <ListItemIcon>
                             <Icon color="primary">

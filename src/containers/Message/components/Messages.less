@@ -1,14 +1,71 @@
 .container {
+    height: 85%;
+    overflow: scroll;
+    background: #fbfbfb;
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 65px;
+        padding: 2px 20px;
+        color: #999;
+        background: #f7f8fa;
+        margin-bottom: 20px;
+        border: 1px solid #eee;
+    }
     .message {
-        border: 1px solid #ddd;
+        font-size: 16px;
+        position: relative;
+        clear: both;
+        margin-bottom: 8px;
+        padding: 13px 14px;
+        vertical-align: top;
         border-radius: 5px;
     }
     .systemMessage {
     }
-    .messageRight {
-        background: orange;
+    .me {
+        float: right;
+        color: #fff;
+        background-color: #00b0ff;
+        margin-right: 66px;
+        .avatar {
+            position: absolute;
+            top: -6px;
+            right: -60px;
+            cursor: pointer;
+        }
+        &::before {
+            position: absolute;
+            top: 19px;
+            width: 8px;
+            height: 6px;
+            content: '\00a0';
+            transform: rotate(29deg) skew(-35deg);
+            background: #00b0ff;
+            right: -4px;
+        }
     }
-    .messageLeft {
-        background: cyan;
+    .you {
+        float: left;
+        color: #1a1a1a;
+        background-color: #eceff1;
+        margin-left: 66px;
+        .avatar {
+            position: absolute;
+            top: -6px;
+            left: -60px;
+            cursor: pointer;
+        }
+        &::before {
+            position: absolute;
+            top: 19px;
+            width: 8px;
+            height: 6px;
+            content: '\00a0';
+            transform: rotate(29deg) skew(-35deg);
+            background: #eceff1;
+            left: -4px;
+        }
     }
 }

@@ -1,18 +1,23 @@
 import React from 'react';
-import {BrowserRouter as Router, Redirect, Route, Link} from "react-router-dom";
+import {hashHistory, Link} from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Message from 'containers/Message';
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 import lightBlue from 'material-ui/colors/cyan';
 import {connect} from 'react-redux';
 import * as userActions from 'actions/user';
 import {bindActionCreators} from 'redux';
 import Sidebar from 'components/Sidebar';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Menu, {MenuItem} from 'material-ui/Menu';
+import {withStyles} from 'material-ui/styles';
 import styles from './style.less';
+import {cookie} from 'utils';
+
+const {removeToken} = cookie;
 
 const theme = createMuiTheme({
     palette: {
@@ -25,12 +30,14 @@ const theme = createMuiTheme({
     }
 });
 
+const style = {};
+
 class ChatRoom extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            value: 0
+            anchorEl: null
         };
     }
 
@@ -53,13 +60,31 @@ class ChatRoom extends React.Component {
         });
     }
 
-    handleChange = (event, value) => {
-        this.setState({value});
+    handleMenu = event => {
+        this.setState({anchorEl: event.currentTarget});
+    };
+
+    handleClose = () => {
+        this.setState({anchorEl: null});
+    };
+
+    logout = () => {
+        this.handleClose();
+        removeToken();
+        hashHistory.push('/login');
     };
 
     render() {
 
-        const {value} = this.state;
+        const {anchorEl} = this.state;
+
+        const {classes, username} = this.props;
+
+        const open = Boolean(anchorEl);
+
+        const sidebarProps = {
+            username
+        };
 
         return (
             <div className={styles.container}>
@@ -68,28 +93,55 @@ class ChatRoom extends React.Component {
                         className={styles.appBar}
                         position="absolute"
                     >
-                        <Toolbar disableGutters={!this.state.open}>
-                            <IconButton
-                                color="inherit"
-                                aria-label="open drawer"
-                                // onClick={this.handleDrawerOpen}
-                                // className={classNames(classes.menuButton, this.state.open && classes.hide)}
-                            >
-                                <MenuIcon/>
-                            </IconButton>
-                            <Typography variant="title" color="inherit" noWrap>
-                                {/*Chat*/}
-                            </Typography>
+                        <Toolbar className={styles.toolBar} disableGutters={!this.state.open}>
+                            <div>
+                                <IconButton
+                                    color="inherit"
+                                    aria-label="open drawer"
+                                    // onClick={this.handleDrawerOpen}
+                                    // className={classNames(classes.menuButton, this.state.open && classes.hide)}
+                                >
+                                    <MenuIcon/>
+                                </IconButton>
+                                <Typography variant="title" color="inherit" noWrap>
+                                    {/*Chat*/}
+                                </Typography>
+                            </div>
+                            <div>
+                                <IconButton
+                                    aria-owns={open ? 'menu-appbar' : null}
+                                    aria-haspopup="true"
+                                    onClick={this.handleMenu}
+                                    color="inherit"
+                                >
+                                    <AccountCircle/>
+                                </IconButton>
+                                <Menu
+                                    id="menu-appbar"
+                                    anchorEl={anchorEl}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={open}
+                                    onClose={this.handleClose}
+                                >
+                                    <MenuItem onClick={this.handleClose}>Homepage</MenuItem>
+                                    <MenuItem onClick={this.handleClose}><Link to="/">Message</Link></MenuItem>
+                                    <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                                    <MenuItem onClick={this.logout}>Logout</MenuItem>
+                                </Menu>
+                            </div>
                         </Toolbar>
                     </AppBar>
                 </MuiThemeProvider>
                 <div className={styles.content}>
-                    <Sidebar/>
-                    <Router>
-                        <React.Fragment>
-                            <Route path="/" component={Message}/>
-                        </React.Fragment>
-                    </Router>
+                    {this.props.location.pathname !== '/profile' && <Sidebar {...sidebarProps}/>}
+                    {this.props.children}
                 </div>
             </div>
         );
@@ -112,4 +164,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatRoom)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(style)(ChatRoom));

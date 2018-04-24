@@ -9,7 +9,6 @@ var logger = require('morgan'); // 命令行log显示
 var cookieParser = require('cookie-parser');
 // 加载body-parser,用来处理post提交过来的数据
 var bodyParser = require('body-parser');
-var jwt = require('jsonwebtoken'); // 使用jwt签名
 // 加载数据库模块
 const mongoose = require('mongoose');
 
@@ -30,7 +29,7 @@ io.on('connection', function (socket) {
         userList[socketID] = info;
         socket.emit('uid', socketID);
         // 发送给其他人，XXX进入 要将消息发给除特定 socket 外的其他用户，可以用 broadcast 标志
-        socket.broadcast.emit('enterUser', userList[socketID].username);
+        socket.broadcast.emit('enterUser', {username: userList[socketID].username, type: 'ENTER_MESSAGE'});
         io.emit("updateUserList", userList);
     });
 
@@ -40,7 +39,7 @@ io.on('connection', function (socket) {
 
     socket.on('leave', function (uid) {
         if (userList.hasOwnProperty(uid)) {
-            socket.broadcast.emit('leaveUser', userList[uid].username);
+            socket.broadcast.emit('leaveUser', {username: userList[uid].username, type: LEAVE_MESSAGE});
             delete userList[uid];
         }
 
@@ -57,10 +56,6 @@ io.on('connection', function (socket) {
         socket.broadcast.emit("updateUserList", userList);
     });
 });
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 app.use(logger('dev'));

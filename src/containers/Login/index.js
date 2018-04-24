@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import {Link} from 'react-router';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import AddIcon from '@material-ui/icons/Add';
@@ -7,9 +7,6 @@ import ReplyIcon from '@material-ui/icons/Reply';
 import {login} from 'api/user';
 import styles from './style.less';
 import {config, cookie} from 'utils';
-import Register from './components/Register';
-import Login from './components/Login';
-import Guest from './components/Guest';
 
 class LoginForm extends React.Component {
 
@@ -31,27 +28,25 @@ class LoginForm extends React.Component {
 
         const {show} = this.state;
 
+        const {children} = this.props;
+
         return (
             <div className={styles.container}>
-                <Router>
-                    <Paper className={styles.paper} elevation={6}>
-                        {show ?
-                            <Link to="/register" onClick={this.handleLinkClick}>
-                                <Button variant="fab" color="secondary" aria-label="add" className={styles.add}>
-                                    <AddIcon/>
-                                </Button>
-                            </Link> :
-                            <Link to="/login" onClick={this.handleLinkClick}>
-                                <Button variant="fab" color="secondary" aria-label="add" className={styles.add}>
-                                    <ReplyIcon/>
-                                </Button>
-                            </Link>
-                        }
-                        <Route path="/login" component={Login}/>
-                        <Route path="/register" component={Register}/>
-                        <Route path="/guest" component={Guest}/>
-                    </Paper>
-                </Router>
+                <Paper className={styles.paper} elevation={6}>
+                    {show ?
+                        <Link to="/login/register" onClick={this.handleLinkClick}>
+                            <Button variant="fab" color="secondary" aria-label="add" className={styles.add}>
+                                <AddIcon/>
+                            </Button>
+                        </Link> :
+                        <Link to="/login" onClick={this.handleLinkClick}>
+                            <Button variant="fab" color="secondary" aria-label="add" className={styles.add}>
+                                <ReplyIcon/>
+                            </Button>
+                        </Link>
+                    }
+                    {children}
+                </Paper>
             </div>
         );
     }

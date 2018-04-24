@@ -3,3 +3,5 @@ export const SET_USERID = 'SET_USERID';
 export const UPDATE_USERLIST = 'UPDATE_USERLIST';
 export const UPDATE_MESSAGE = 'UPDATE_MESSAGE';
 export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
+export const SET_ONLINENUMS = 'SET_ONLINENUMS';
+export const SET_SEX = 'SET_SEX';

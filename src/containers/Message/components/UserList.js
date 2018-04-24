@@ -4,7 +4,7 @@ import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import Menu, {MenuItem} from 'material-ui/Menu';
 import ImageIcon from '@material-ui/icons/Image';
-import Button from 'material-ui/Button';
+import TextField from 'material-ui/TextField';
 
 import styles from './UserList.less';
 
@@ -31,6 +31,8 @@ class UserList extends React.Component {
         const userList = this.props.userList;
         const userNums = Object.keys(userList).length;
 
+        this.props.setOnlineNums(userNums);
+
         for (let uid in userList) {
             const [username] = [userList[uid].username];
             // const listbkColor = sex === 'boy' ? '#99BBFF' : '#FF88C2';
@@ -42,10 +44,8 @@ class UserList extends React.Component {
             userListElement.push(
                 <div key={uid}>
                     <ListItem button>
-                        <Avatar src="/logo.jpg">
-                            <ImageIcon/>
-                        </Avatar>
-                        <ListItemText primary="远方" secondary="生活不只眼前的苟且"/>
+                        <Avatar src="/default_avatar.png" onClick={this.handleClick}/>
+                        <ListItemText primary={username} secondary="生活不只眼前的苟且"/>
                     </ListItem>
                     <Divider/>
                 </div>);
@@ -56,9 +56,7 @@ class UserList extends React.Component {
             foo.push(
                 <div key={i}>
                     <ListItem button>
-                        <Avatar onClick={this.handleClick}>
-                            <ImageIcon/>
-                        </Avatar>
+                        <Avatar src="/default_avatar.png" onClick={this.handleClick}/>
                         <ListItemText primary="远方" secondary="生活不只眼前的苟且"/>
                     </ListItem>
                     <Divider/>
@@ -70,10 +68,14 @@ class UserList extends React.Component {
 
         return (
             <div className={styles.container}>
-                <div>
-                    {/*{userNums}*/}
-                </div>
+
+                {/*<TextField fullWidth id="input-with-icon-grid" label="With a grid" />*/}
+                {/*<Divider/>*/}
                 <List>
+                    {/*<ListItem button>*/}
+                        {/*<Avatar src="/default_avatar.png" onClick={this.handleClick}/>*/}
+                        {/*<ListItemText primary="Search"/>*/}
+                    {/*</ListItem>*/}
                     {/*{userListElement}*/}
                     {foo}
                 </List>
@@ -83,9 +85,9 @@ class UserList extends React.Component {
                     open={Boolean(anchorEl)}
                     onClose={this.handleClose}
                 >
-                    <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                    <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                    <MenuItem onClick={this.handleClose}>添加好友</MenuItem>
+                    <MenuItem onClick={this.handleClose}>忽略此人</MenuItem>
+                    <MenuItem onClick={this.handleClose}>私聊</MenuItem>
                 </Menu>
             </div>
         );

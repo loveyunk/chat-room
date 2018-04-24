@@ -20,3 +20,12 @@ export function register(params) {
         data: params
     });
 }
+
+// 获取用户信息
+export function getUserInfo(params) {
+    return request({
+        method: 'get',
+        url: 'userInfo',
+        data: params
+    });
+}

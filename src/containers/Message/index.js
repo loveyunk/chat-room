@@ -12,7 +12,7 @@ class Message extends React.Component {
     render() {
         return (
             <div className={styles.container}>
-                <UserList userList={this.props.userList}/>
+                <UserList userList={this.props.userList} setOnlineNums = {this.props.setOnlineNums}/>
                 <div className={styles.content}>
                     <Messages {...this.props} />
                     <MessageInput {...this.props}/>
@@ -28,14 +28,17 @@ const mapStateToProps = state => {
         socket: state.userInfo.socket,
         uid: state.userInfo.uid,
         userList: state.userInfo.userList,
-        messages: state.userInfo.messages
+        messages: state.userInfo.messages,
+        onlineNums: state.userInfo.onlineNums
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         updateMessages: bindActionCreators(userActions.updateMessages, dispatch),
-        updateUserList: bindActionCreators(userActions.updateUserList, dispatch)
+        updateUserList: bindActionCreators(userActions.updateUserList, dispatch),
+        clearMessages: bindActionCreators(userActions.clearMessages, dispatch),
+        setOnlineNums: bindActionCreators(userActions.setOnlineNums, dispatch)
     };
 };
 

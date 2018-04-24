@@ -1,7 +1,6 @@
 import React from 'react';
-import {Link, withRouter} from "react-router-dom";
+import {hashHistory} from 'react-router';
 import TextField from 'material-ui/TextField';
-import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import Avatar from 'material-ui/Avatar';
 import Snackbar from 'material-ui/Snackbar';
@@ -41,17 +40,20 @@ class Login extends React.Component {
             login({username, password}).then(res => {
                 if (res.data.error === ERR_OK) {
                     setToken(res.data.token);
-                    const {username} = res.data.data;
+                    const {username, sex} = res.data.data;
                     const userObj = {
-                        username
+                        username,
+                        sex
                     };
+
+                    socket.emit('enter', userObj);
+
                     socket.on('uid', function (uid) {
                         _this.props.setUserId(uid);
                     });
 
-                    socket.emit('enter', userObj);
                     this.props.setUserInfo(userObj);
-                    this.props.history.push("/chatroom");
+                    hashHistory.push('/');
                 } else {
                     this.setState({
                         open: true,
@@ -143,14 +145,14 @@ class Login extends React.Component {
                         fullWidth={true}>
                     登录
                 </Button>
-                <div className={styles.divider}>
-                    <Typography variant="caption" className={styles.or}>
-                        OR
-                    </Typography>
-                </div>
-                <Link to="/guest">
-                    <Button fullWidth>游客登录</Button>
-                </Link>
+                {/*<div className={styles.divider}>*/}
+                {/*<Typography variant="caption" className={styles.or}>*/}
+                {/*OR*/}
+                {/*</Typography>*/}
+                {/*</div>*/}
+                {/*<Link to="/login/guest">*/}
+                {/*<Button fullWidth>游客登录</Button>*/}
+                {/*</Link>*/}
             </div>
         );
     }
@@ -166,8 +168,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         setUserId: bindActionCreators(userActions.setUserId, dispatch),
-        setUserInfo: bindActionCreators(userActions.setUserInfo, dispatch)
+        setUserInfo: bindActionCreators(userActions.setUserInfo, dispatch),
+        setSex: bindActionCreators(userActions.setSex, dispatch)
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -4,6 +4,7 @@ export default {
     logo: '/logo.jpg',
     api: {
         loginApi: '/user/login',
-        registerApi: '/user/register'
+        registerApi: '/user/register',
+        userInfo: '/user/info'
     }
 };

@@ -8,7 +8,8 @@ const initialState = {
     sex: '', // 性别
     userList: {},
     messages: [],
-    socket: io()
+    socket: io(),
+    onlineNums: 0
 };
 
 export const userInfo = (state = initialState, action) => {
@@ -23,6 +24,10 @@ export const userInfo = (state = initialState, action) => {
             return Object.assign({}, state, {messages: [...state.messages, action.messages]});
         case actionTypes.CLEAR_MESSAGE:
             return Object.assign({}, state, {messages: []});
+        case actionTypes.SET_ONLINENUMS:
+            return Object.assign({}, state, {onlineNums: action.onlineNums});
+        case actionTypes.SET_SEX:
+            return Object.assign({}, state, {sex: action.sex});
         default:
             return state
     }

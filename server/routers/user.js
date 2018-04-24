@@ -40,11 +40,13 @@ router.post('/login', function (req, res) {
         // 数据库中查询到信息
         responseData.message = '登录成功';
         let token = jwt.sign({...userInfo}, 'chat-room', {
-            expiresIn: 60 // 授权时效24小时
+            expiresIn: 60 * 60 * 24 // 授权时效24小时
         });
         responseData.token = token;
         responseData.data = {
-            username: userInfo.username
+            uid: userInfo._id,
+            username: userInfo.username,
+            sex: userInfo.sex
         };
         res.json(responseData);
     });
@@ -63,6 +65,7 @@ router.post('/login', function (req, res) {
 router.post('/register', function (req, res) {
     let username = req.body.username;
     let password = req.body.password;
+    let sex = req.body.sex;
     // 用户名不能为空，不得超过20位
     if (username === '') {
         responseData.error = 1;
@@ -89,11 +92,33 @@ router.post('/register', function (req, res) {
         }
         // 保存用户注册信息
         let user = new User({
-            username: username,
-            password: password
+            username,
+            password,
+            sex
         });
         user.save();
         responseData.message = '注册成功';
+        res.json(responseData);
+    });
+});
+
+// 刷新用户信息接口
+router.get('/info', function (req, res) {
+    let _id = req.query.uid;
+    User.findOne({_id}).then(userInfo => {
+        if (!userInfo) {
+            responseData.error = '300';
+            responseData.message = '用户id错误';
+            res.json(responseData);
+            return;
+        }
+        responseData.error = 0;
+        responseData.message = '用户信息请求成功';
+        responseData.data = {
+            uid: userInfo._id,
+            username: userInfo.username,
+            sex: userInfo.sex
+        };
         res.json(responseData);
     });
 });

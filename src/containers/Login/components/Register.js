@@ -6,6 +6,9 @@ import Fade from 'material-ui/transitions/Fade';
 import Snackbar from 'material-ui/Snackbar';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Radio, {RadioGroup} from 'material-ui/Radio';
+import {withStyles} from 'material-ui/styles';
+import {FormControl, FormControlLabel} from 'material-ui/Form';
 
 import styles from './Register.less';
 import {register} from 'api/user';
@@ -13,6 +16,12 @@ import {register} from 'api/user';
 import {config} from 'utils';
 
 const {ERR_OK} = config;
+
+const style = theme => ({
+    group: {
+        flexDirection: 'row'
+    }
+});
 
 class Register extends React.Component {
 
@@ -23,14 +32,15 @@ class Register extends React.Component {
             password: '',
             usernameError: false,
             passwordError: false,
-            open: false
+            open: false,
+            sex: '男'
         };
     }
 
     handleRegister = () => {
-        const {username, password} = this.state;
+        const {username, password, sex} = this.state;
         if (username && password) {
-            register({username, password}).then(res => {
+            register({username, password, sex}).then(res => {
                 if (res.data.error === ERR_OK) {
                     this.setState({
                         open: true,
@@ -56,14 +66,15 @@ class Register extends React.Component {
     };
 
     handleChange = value => event => {
+        this.setState({
+            [value]: event.target.value
+        });
         if (value === 'username') {
             this.setState({
-                [value]: event.target.value,
                 usernameError: false
             });
         } else if (value === 'password') {
             this.setState({
-                [value]: event.target.value,
                 passwordError: false
             });
         }
@@ -80,6 +91,9 @@ class Register extends React.Component {
     };
 
     render() {
+
+        const {classes} = this.props;
+
         return (
             <Fade className={styles.container} in>
                 <div>
@@ -104,8 +118,20 @@ class Register extends React.Component {
                         ]}
                     />
                     <Typography variant="display1" gutterBottom>
-                        创建帐户
+                        {/*创建帐户*/}
                     </Typography>
+                    <FormControl component="fieldset" required>
+                        <RadioGroup
+                            aria-label="sex"
+                            name="sex"
+                            className={classes.group}
+                            value={this.state.sex}
+                            onChange={this.handleChange('sex')}
+                        >
+                            <FormControlLabel value="男" control={<Radio/>} label="男"/>
+                            <FormControlLabel value="女" control={<Radio/>} label="女"/>
+                        </RadioGroup>
+                    </FormControl>
                     <TextField
                         className={styles.textField}
                         label="用户名"
@@ -134,4 +160,4 @@ class Register extends React.Component {
     }
 }
 
-export default Register;
+export default withStyles(style)(Register);

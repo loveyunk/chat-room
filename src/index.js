@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.less';
-import App from './containers/App';
+import {hashHistory} from 'react-router';
 import {Provider} from 'react-redux';
 import store from './store';
 import registerServiceWorker from './registerServiceWorker';
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 import blue from 'material-ui/colors/blue';
 // import './styles/index.less';
+import RouteMap from './router/routeMap';
 
 const theme = createMuiTheme({
     palette: {
@@ -18,7 +19,7 @@ const theme = createMuiTheme({
 ReactDOM.render(
     <Provider store={store}>
         <MuiThemeProvider theme={theme}>
-            <App/>
+            <RouteMap history={hashHistory}/>
         </MuiThemeProvider>
     </Provider>, document.getElementById('root'));
 registerServiceWorker();
