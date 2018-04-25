@@ -1,5 +1,3 @@
-import io from 'socket.io-client';
-
 import * as actionTypes from 'constants/user';
 
 const initialState = {
@@ -8,7 +6,6 @@ const initialState = {
     sex: '', // 性别
     userList: {},
     messages: [],
-    socket: io(),
     onlineNums: 0
 };
 

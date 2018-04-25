@@ -16,6 +16,10 @@ import Menu, {MenuItem} from 'material-ui/Menu';
 import {withStyles} from 'material-ui/styles';
 import styles from './style.less';
 import {cookie} from 'utils';
+import store from 'store2';
+import io from 'socket.io-client';
+
+const socket = io();
 
 const {removeToken} = cookie;
 
@@ -42,8 +46,6 @@ class ChatRoom extends React.Component {
     }
 
     componentDidMount() {
-        const socket = this.props.socket;
-
         // 提醒有用户加入
         socket.on('enterUser', username => {
             this.props.updateMessages(username);
@@ -71,6 +73,8 @@ class ChatRoom extends React.Component {
     logout = () => {
         this.handleClose();
         removeToken();
+        // store.remove('uid');
+        store.clearAll();
         hashHistory.push('/login');
     };
 
@@ -151,7 +155,6 @@ class ChatRoom extends React.Component {
 const mapStateToProps = state => {
     return {
         username: state.userInfo.username,
-        socket: state.userInfo.socket,
         uid: state.userInfo.uid,
         userList: state.userInfo.userList
     };

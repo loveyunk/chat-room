@@ -3,8 +3,10 @@ import Button from 'material-ui/Button';
 import Icon from 'material-ui/Icon';
 import TextField from 'material-ui/TextField';
 import EmojiPicker from 'emoji-picker-react';
-
 import styles from './MessageInput.less';
+import io from 'socket.io-client';
+
+const socket = io();
 
 class MessageInput extends React.Component {
 
@@ -26,7 +28,7 @@ class MessageInput extends React.Component {
                 time: this.getTime()
             };
 
-            this.props.socket.emit('updateMessages', messageObj);
+            socket.emit('updateMessages', messageObj);
 
             this.setState({
                 message: ''

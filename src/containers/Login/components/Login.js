@@ -12,6 +12,10 @@ import {bindActionCreators} from 'redux';
 import {login} from 'api/user';
 import styles from './Login.less';
 import {config, cookie} from 'utils';
+import store from 'store2';
+import io from 'socket.io-client';
+
+const socket = io();
 
 const {ERR_OK} = config;
 const {setToken} = cookie;
@@ -31,7 +35,6 @@ class Login extends React.Component {
     }
 
     handleLogin = () => {
-        const socket = this.props.socket;
         const {username, password} = this.state;
 
         const _this = this;
@@ -40,7 +43,7 @@ class Login extends React.Component {
             login({username, password}).then(res => {
                 if (res.data.error === ERR_OK) {
                     setToken(res.data.token);
-                    const {username, sex} = res.data.data;
+                    const {uid, username, sex} = res.data.data;
                     const userObj = {
                         username,
                         sex
@@ -51,6 +54,8 @@ class Login extends React.Component {
                     socket.on('uid', function (uid) {
                         _this.props.setUserId(uid);
                     });
+
+                    store.set('uid', uid);
 
                     this.props.setUserInfo(userObj);
                     hashHistory.push('/');
@@ -160,8 +165,7 @@ class Login extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        username: state.userInfo.username,
-        socket: state.userInfo.socket
+        username: state.userInfo.username
     };
 };
 

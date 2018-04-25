@@ -5,6 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import Snackbar from 'material-ui/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Typography from 'material-ui/Typography';
 import styles from './Messages.less';
 
 class Messages extends React.Component {
@@ -35,17 +36,21 @@ class Messages extends React.Component {
             if (message.hasOwnProperty('type')) {
                 switch (message.type) {
                     case 'ENTER_MESSAGE':
-                        systemMsg = 'is coming in the room';
+                        systemMsg = '加入了群聊';
                         break;
                     case 'LEAVE_MESSAGE':
-                        systemMsg = 'is leaving out of the room';
+                        systemMsg = '退出了群聊';
                         break;
                     default:
                         break;
                 }
 
+
                 messageElement.push(<div key={index}
-                                         className={classnames(styles.message, styles.systemMessage)}> {`${message.username} ${systemMsg}`} </div>);
+                                         className={classnames(styles.message, styles.systemMessage)}>
+                    <Typography variant="caption" className={styles.or}>
+                        {`${message.username} ${systemMsg}`}
+                    </Typography></div>);
             } else {
                 if (message.uid === this.props.uid) {
 
@@ -111,7 +116,9 @@ class Messages extends React.Component {
                         <DeleteIcon/>
                     </IconButton>
                 </div>
-                {messageElement}
+                <div className={styles.content}>
+                    {messageElement}
+                </div>
             </div>
         );
     }

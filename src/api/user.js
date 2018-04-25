@@ -1,7 +1,7 @@
 import {request, config} from 'utils';
 
 const {api} = config;
-const {loginApi, registerApi} = api;
+const {loginApi, registerApi, userInfo} = api;
 
 // 登录
 export function login(params) {
@@ -25,7 +25,7 @@ export function register(params) {
 export function getUserInfo(params) {
     return request({
         method: 'get',
-        url: 'userInfo',
+        url: userInfo,
         data: params
     });
 }

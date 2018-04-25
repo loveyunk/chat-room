@@ -25,7 +25,6 @@ class Message extends React.Component {
 const mapStateToProps = state => {
     return {
         username: state.userInfo.username,
-        socket: state.userInfo.socket,
         uid: state.userInfo.uid,
         userList: state.userInfo.userList,
         messages: state.userInfo.messages,

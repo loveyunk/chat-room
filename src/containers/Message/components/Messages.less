@@ -1,8 +1,13 @@
 .container {
-    height: 85%;
-    overflow: scroll;
+    position: relative;
+    height: calc(100vh - 193px);
     background: #fbfbfb;
+    padding-top: 65px;
     .topbar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -10,8 +15,11 @@
         padding: 2px 20px;
         color: #999;
         background: #f7f8fa;
-        margin-bottom: 20px;
         border: 1px solid #eee;
+    }
+    .content {
+        overflow: scroll;
+        height: 100%;
     }
     .message {
         font-size: 16px;
@@ -21,8 +29,12 @@
         padding: 13px 14px;
         vertical-align: top;
         border-radius: 5px;
+        &:first-child {
+            margin-top: 26px;
+        }
     }
     .systemMessage {
+        text-align: center;
     }
     .me {
         float: right;

@@ -5,47 +5,37 @@ import {connect} from 'react-redux';
 import * as userActions from 'actions/user';
 import {bindActionCreators} from 'redux';
 import {cookie} from 'utils';
+import {getUserInfo} from 'api/user';
+import {config} from 'utils';
+import store from 'store2';
+
+const {ERR_OK} = config;
 
 class App extends React.Component {
+
+    componentDidMount() {
+        const uid = store.get('uid');
+        // console.log(store.get('userInfo'));
+        // const userInfo = JSON.parse(store.get('userInfo'));
+        // const userInfo = store.get('userInfo');
+        // console.log(userInfo);
+        // console.log(store.get('userNums'));
+        getUserInfo({uid})
+            .then(res => {
+                if (res.data.error === ERR_OK) {
+                    this.props.setUserInfo(res.data.data);
+                    // this.props.setUserInfo({...userInfo});
+                }
+            });
+    }
+
     render() {
-
-        // const renderDom = getToken() ? <ChatRoom/> : <Login {...this.props}/>;
-
         const {children} = this.props;
 
         return (
             <React.Fragment>
                 <CssBaseline/>
                 {children}
-                {/*{renderDom}*/}
-                {/*<Router>*/}
-                    {/*<div>*/}
-                        {/*<Route path="/login"*/}
-                               {/*render={() =>*/}
-                                   {/*getToken() ? (*/}
-                                       {/*<Redirect*/}
-                                           {/*to={{*/}
-                                               {/*pathname: "/chatroom"*/}
-                                           {/*}}*/}
-                                       {/*/>*/}
-                                   {/*) : (*/}
-                                       {/*<Login/>*/}
-                                   {/*)*/}
-                               {/*}/>*/}
-                        {/*<Route path="/chatroom"*/}
-                               {/*render={() =>*/}
-                                   {/*getToken() ? (*/}
-                                       {/*<ChatRoom/>*/}
-                                   {/*) : (*/}
-                                       {/*<Redirect*/}
-                                           {/*to={{*/}
-                                               {/*pathname: "/login"*/}
-                                           {/*}}*/}
-                                       {/*/>*/}
-                                   {/*)*/}
-                               {/*}/>*/}
-                    {/*</div>*/}
-                {/*</Router>*/}
             </React.Fragment>
         );
     }
@@ -53,14 +43,14 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        username: state.userInfo.username,
-        socket: state.userInfo.socket
+        username: state.userInfo.username
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        actions: bindActionCreators(userActions, dispatch)
+        actions: bindActionCreators(userActions, dispatch),
+        setUserInfo: bindActionCreators(userActions.setUserInfo, dispatch)
     };
 };
 

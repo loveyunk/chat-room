@@ -16,8 +16,13 @@ const mongoose = require('mongoose');
 var app = express();
 
 // 开启socket.io
-var server = app.listen(3001);
-var io = require('socket.io').listen(server);
+// var server = app.listen(3001);
+// var io = require('socket.io').listen(server);
+
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+
+server.listen(3001);
 
 // socket.io
 let userList = {};
@@ -25,6 +30,7 @@ let userList = {};
 io.on('connection', function (socket) {
     let socketID = socket.id;
 
+    // 当有用户加入的时候
     socket.on('enter', function (info) {
         userList[socketID] = info;
         socket.emit('uid', socketID);

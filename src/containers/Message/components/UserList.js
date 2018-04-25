@@ -1,10 +1,9 @@
 import React from 'react';
-import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
+import List, {ListItem, ListItemText} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import Menu, {MenuItem} from 'material-ui/Menu';
-import ImageIcon from '@material-ui/icons/Image';
-import TextField from 'material-ui/TextField';
+import store from 'store2';
 
 import styles from './UserList.less';
 
@@ -73,11 +72,11 @@ class UserList extends React.Component {
                 {/*<Divider/>*/}
                 <List>
                     {/*<ListItem button>*/}
-                        {/*<Avatar src="/default_avatar.png" onClick={this.handleClick}/>*/}
-                        {/*<ListItemText primary="Search"/>*/}
+                    {/*<Avatar src="/default_avatar.png" onClick={this.handleClick}/>*/}
+                    {/*<ListItemText primary="Search"/>*/}
                     {/*</ListItem>*/}
-                    {/*{userListElement}*/}
-                    {foo}
+                    {userListElement}
+                    {/*{foo}*/}
                 </List>
                 <Menu
                     id="simple-menu"

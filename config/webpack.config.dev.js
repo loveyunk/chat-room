@@ -138,10 +138,10 @@ module.exports = {
                 ],
                 include: paths.appSrc,
             },
-            {
-                test: /\.json$/,
-                loader: "json-loader"
-            },
+            // {
+            //     test: /\.json$/,
+            //     loader: "json-loader"
+            // },
             {
                 // "oneOf" will traverse all following loaders until one will
                 // match the requirements. When no loader matches it will fall

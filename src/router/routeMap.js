@@ -22,13 +22,18 @@ class RouterMap extends React.Component {
                     <Route path="/" component={ChatRoom}
                            onEnter={(nextState, replace) => {
                                if (!getToken()) {
-                                   replace({pathname: '/user/login'});
+                                   replace({pathname: '/login'});
                                }
                            }}>
                         <IndexRoute component={Message}/>
                         <Route path="profile" component={Profile}/>
                     </Route>
-                    <Route path="login" component={LoginWrapper}>
+                    <Route path="login" component={LoginWrapper}
+                           onEnter={(nextState, replace) => {
+                               if (getToken()) {
+                                   replace({pathname: '/'});
+                               }
+                           }}>
                         <IndexRoute component={Login}/>
                         <Route path="register" component={Register}/>
                         <Route path="guest" component={Guest}/>
