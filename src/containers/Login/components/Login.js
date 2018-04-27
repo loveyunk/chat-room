@@ -1,11 +1,12 @@
 import React from 'react';
-import {hashHistory} from 'react-router';
+import {hashHistory, Link} from 'react-router';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import Avatar from 'material-ui/Avatar';
 import Snackbar from 'material-ui/Snackbar';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Typography from 'material-ui/Typography';
 import {connect} from 'react-redux';
 import * as userActions from 'actions/user';
 import {bindActionCreators} from 'redux';
@@ -55,6 +56,7 @@ class Login extends React.Component {
                         _this.props.setUserId(uid);
                     });
 
+                    // 些uid非彼uid
                     store.set('uid', uid);
 
                     this.props.setUserInfo(userObj);
@@ -150,14 +152,14 @@ class Login extends React.Component {
                         fullWidth={true}>
                     登录
                 </Button>
-                {/*<div className={styles.divider}>*/}
-                {/*<Typography variant="caption" className={styles.or}>*/}
-                {/*OR*/}
-                {/*</Typography>*/}
-                {/*</div>*/}
-                {/*<Link to="/login/guest">*/}
-                {/*<Button fullWidth>游客登录</Button>*/}
-                {/*</Link>*/}
+                <div className={styles.divider}>
+                    <Typography variant="caption" className={styles.or}>
+                        OR
+                    </Typography>
+                </div>
+                <Link to="/login/guest">
+                    <Button fullWidth>游客登录</Button>
+                </Link>
             </div>
         );
     }

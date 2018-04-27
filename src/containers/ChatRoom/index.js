@@ -60,6 +60,11 @@ class ChatRoom extends React.Component {
         socket.on('updateMessages', messages => {
             this.props.updateMessages(messages);
         });
+
+        // 有用户退出
+        socket.on('leaveUser', username => {
+            this.props.updateMessages({type: 'LEAVE_MESSAGE', username: username})
+        })
     }
 
     handleMenu = event => {
@@ -71,11 +76,14 @@ class ChatRoom extends React.Component {
     };
 
     logout = () => {
+        socket.emit('leave', this.props.uid);
+        // this.props.actions.leaveChatRoom();
         this.handleClose();
         removeToken();
-        // store.remove('uid');
+        this.props.setIdentity(0);
         store.clearAll();
         hashHistory.push('/login');
+        window.location.reload();
     };
 
     render() {
@@ -144,7 +152,8 @@ class ChatRoom extends React.Component {
                     </AppBar>
                 </MuiThemeProvider>
                 <div className={styles.content}>
-                    {this.props.location.pathname !== '/profile' && <Sidebar {...sidebarProps}/>}
+                    {(this.props.identity === 0 && this.props.location.pathname !== '/profile') &&
+                    <Sidebar {...sidebarProps}/>}
                     {this.props.children}
                 </div>
             </div>
@@ -156,14 +165,16 @@ const mapStateToProps = state => {
     return {
         username: state.userInfo.username,
         uid: state.userInfo.uid,
-        userList: state.userInfo.userList
+        userList: state.userInfo.userList,
+        identity: state.userInfo.identity
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         updateMessages: bindActionCreators(userActions.updateMessages, dispatch),
-        updateUserList: bindActionCreators(userActions.updateUserList, dispatch)
+        updateUserList: bindActionCreators(userActions.updateUserList, dispatch),
+        setIdentity: bindActionCreators(userActions.setIdentity, dispatch)
     };
 };
 

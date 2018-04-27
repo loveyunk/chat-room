@@ -5,3 +5,5 @@ export const UPDATE_MESSAGE = 'UPDATE_MESSAGE';
 export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
 export const SET_ONLINENUMS = 'SET_ONLINENUMS';
 export const SET_SEX = 'SET_SEX';
+export const SET_IDENTITY = 'SET_IDENTITY';
+export const LEAVE_CHATROOM = 'LEAVE_CHATROM';

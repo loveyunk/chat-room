@@ -62,9 +62,9 @@ class MessageInput extends React.Component {
     };
 
     handleEmoji = (val, a, b) => {
-        console.log(val);
-        console.log(a);
-        console.log(b);
+        // console.log(val);
+        // console.log(a);
+        // console.log(b);
         this.setState({
             message: val
         });

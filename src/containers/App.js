@@ -15,16 +15,10 @@ class App extends React.Component {
 
     componentDidMount() {
         const uid = store.get('uid');
-        // console.log(store.get('userInfo'));
-        // const userInfo = JSON.parse(store.get('userInfo'));
-        // const userInfo = store.get('userInfo');
-        // console.log(userInfo);
-        // console.log(store.get('userNums'));
-        getUserInfo({uid})
+        uid && getUserInfo({uid})
             .then(res => {
                 if (res.data.error === ERR_OK) {
                     this.props.setUserInfo(res.data.data);
-                    // this.props.setUserInfo({...userInfo});
                 }
             });
     }

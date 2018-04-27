@@ -40,7 +40,7 @@ router.post('/login', function (req, res) {
         // 数据库中查询到信息
         responseData.message = '登录成功';
         let token = jwt.sign({...userInfo}, 'chat-room', {
-            expiresIn: 60 * 60 * 24 // 授权时效24小时
+            expiresIn: 60 * 60 * 24
         });
         responseData.token = token;
         responseData.data = {
@@ -85,7 +85,7 @@ router.post('/register', function (req, res) {
         username
     }).then(userInfo => {
         if (userInfo) {
-            responseData.error = 4;
+            responseData.error = 30002;
             responseData.message = '用户名已被注册';
             res.json(responseData);
             return;

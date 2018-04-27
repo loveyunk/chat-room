@@ -7,3 +7,5 @@ export const updateMessages = messages => ({type: actionTypes.UPDATE_MESSAGE, me
 export const clearMessages = () => ({type: actionTypes.CLEAR_MESSAGE});
 export const setOnlineNums = onlineNums => ({type: actionTypes.SET_ONLINENUMS, onlineNums});
 export const setSex = sex => ({type: actionTypes.SET_SEX, sex});
+export const setIdentity = identity => ({type: actionTypes.SET_IDENTITY, identity});
+export const leaveChatRoom = () => ({type: actionTypes.LEAVE_CHATROOM});

@@ -10,10 +10,12 @@ import Guest from '../containers/Login/components/Guest';
 import ChatRoom from '../containers/ChatRoom';
 import Message from '../containers/Message';
 import Profile from '../containers/Profile';
+import store from '../store';
 
 const {getToken} = cookie;
 
 class RouterMap extends React.Component {
+
     render() {
 
         return (
@@ -21,8 +23,11 @@ class RouterMap extends React.Component {
                 <Route component={App}>
                     <Route path="/" component={ChatRoom}
                            onEnter={(nextState, replace) => {
-                               if (!getToken()) {
-                                   replace({pathname: '/login'});
+                               const identity = store.getState().userInfo.identity;
+                               if (identity !== 1) {
+                                   if (!getToken()) {
+                                       replace({pathname: '/login'});
+                                   }
                                }
                            }}>
                         <IndexRoute component={Message}/>
@@ -38,7 +43,7 @@ class RouterMap extends React.Component {
                         <Route path="register" component={Register}/>
                         <Route path="guest" component={Guest}/>
                     </Route>
-                    {/* 其他重定向到 404 */}
+                     {/*其他重定向到 404*/}
                     {/*<Redirect from='*' to='/404'/>*/}
                 </Route>
             </Router>

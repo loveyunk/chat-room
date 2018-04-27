@@ -6,7 +6,8 @@ const initialState = {
     sex: '', // 性别
     userList: {},
     messages: [],
-    onlineNums: 0
+    onlineNums: 0,
+    identity: 0 // 0 注册用户 1 游客
 };
 
 export const userInfo = (state = initialState, action) => {
@@ -25,6 +26,8 @@ export const userInfo = (state = initialState, action) => {
             return Object.assign({}, state, {onlineNums: action.onlineNums});
         case actionTypes.SET_SEX:
             return Object.assign({}, state, {sex: action.sex});
+        case actionTypes.SET_IDENTITY:
+            return Object.assign({}, state, {identity: action.identity});
         default:
             return state
     }

@@ -15,24 +15,40 @@ const mongoose = require('mongoose');
 // 创建app应用 =>NodeJs Http.creatServer()
 var app = express();
 
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
 // 开启socket.io
+var server = app.listen(3001);
+var io = require('socket.io').listen(server);
+
 // var server = app.listen(3001);
 // var io = require('socket.io').listen(server);
 
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-
-server.listen(3001);
+// const server = app.listen(3001);
+// const io = require('socket.io')(server);
+// var socket = io.connect('http://example.com:3080');
+//
+// var server = require('http').createServer(app);
+// var io = require('socket.io')(server);
+//
+// server.listen(3001);
 
 // socket.io
 let userList = {};
 
 io.on('connection', function (socket) {
+    // 每个用户都会被分配一个唯一的socket.id
     let socketID = socket.id;
 
-    // 当有用户加入的时候
+    // 当有用户加入的时候，socket会发起三个广播，分别是
+    // 向自己，把uid发送给自己
+    // 向除自己外的其他人，选择他们有新用户加入
+    // 向所有人，更新用户列表
     socket.on('enter', function (info) {
         userList[socketID] = info;
+        // 向建立该连接的客户端广播
         socket.emit('uid', socketID);
         // 发送给其他人，XXX进入 要将消息发给除特定 socket 外的其他用户，可以用 broadcast 标志
         socket.broadcast.emit('enterUser', {username: userList[socketID].username, type: 'ENTER_MESSAGE'});
@@ -46,7 +62,7 @@ io.on('connection', function (socket) {
     socket.on('leave', function (uid) {
         if (userList.hasOwnProperty(uid)) {
             socket.broadcast.emit('leaveUser', {username: userList[uid].username, type: LEAVE_MESSAGE});
-            delete userList[uid];
+            delete userList[uid]
         }
 
         socket.broadcast.emit("updateUserList", userList);
