@@ -12,9 +12,12 @@ import RouteMap from './router/routeMap';
 
 const theme = createMuiTheme({
     palette: {
-        primary: blue
+        primary: {
+            main: blue[500]
+        }
     }
 });
+
 
 ReactDOM.render(
     <Provider store={store}>

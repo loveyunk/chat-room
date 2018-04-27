@@ -12,39 +12,45 @@ class LoginForm extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            show: false
-        };
     }
-
-    handleLinkClick = () => {
-        this.setState((prevState) => ({
-            show: !prevState.show
-        }));
-    };
-
 
     render() {
 
-        const {show} = this.state;
-
         const {children} = this.props;
+
+        const circleLink = (() => {
+            const pathname = this.props.location.pathname;
+            if (pathname === '/login') {
+                return (
+                    <Link to="/login/register">
+                        <Button variant="fab" color="secondary" aria-label="add" className={styles.add}>
+                            <AddIcon/>
+                        </Button>
+                    </Link>
+                );
+            } else if (pathname === '/login/register') {
+                return (
+                    <Link to="/login">
+                        <Button variant="fab" color="secondary" aria-label="reply" className={styles.add}>
+                            <ReplyIcon/>
+                        </Button>
+                    </Link>
+                );
+            } else if (pathname === '/login/guest') {
+                return (
+                    <Link to="/login">
+                        <Button variant="fab" color="secondary" aria-label="reply" className={styles.add}>
+                            <ReplyIcon/>
+                        </Button>
+                    </Link>
+                );
+            }
+        })();
 
         return (
             <div className={styles.container}>
                 <Paper className={styles.paper} elevation={6}>
-                    {show ?
-                        <Link to="/login/register" onClick={this.handleLinkClick}>
-                            <Button variant="fab" color="secondary" aria-label="add" className={styles.add}>
-                                <AddIcon/>
-                            </Button>
-                        </Link> :
-                        <Link to="/login" onClick={this.handleLinkClick}>
-                            <Button variant="fab" color="secondary" aria-label="add" className={styles.add}>
-                                <ReplyIcon/>
-                            </Button>
-                        </Link>
-                    }
+                    {circleLink}
                     {children}
                 </Paper>
             </div>

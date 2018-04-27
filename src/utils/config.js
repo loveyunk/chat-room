@@ -1,7 +1,7 @@
 export default {
     BASE_URL: '',
     ERR_OK: 0,
-    logo: '/logo.jpg',
+    logo: '/logo.png',
     api: {
         loginApi: '/user/login',
         registerApi: '/user/register',

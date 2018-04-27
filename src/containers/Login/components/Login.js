@@ -2,7 +2,6 @@ import React from 'react';
 import {hashHistory, Link} from 'react-router';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
-import Avatar from 'material-ui/Avatar';
 import Snackbar from 'material-ui/Snackbar';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -129,7 +128,9 @@ class Login extends React.Component {
                         </IconButton>
                     ]}
                 />
-                <Avatar src={config.logo} className={styles.avatar}/>
+                <div className={styles.logoWrapper}>
+                    <img src={config.logo} className={styles.logo} alt="logo"/>
+                </div>
                 <TextField
                     className={styles.textField}
                     label="用户名"
