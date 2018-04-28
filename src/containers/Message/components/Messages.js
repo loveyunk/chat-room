@@ -7,6 +7,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from 'material-ui/Typography';
 import styles from './Messages.less';
+import {config} from 'utils';
 
 class Messages extends React.Component {
 
@@ -55,11 +56,12 @@ class Messages extends React.Component {
                 if (message.uid === this.props.uid) {
 
                     messageElement.push(
-                        <div key={index} className={classnames(styles.message, styles.me)}>
+                        <div key={index} className={classnames(styles.message, styles.me)}
+                             style={{backgroundColor: message.color}}>
                             <Avatar
                                 className={styles.avatar}
                                 alt="Adelle Charles"
-                                src="https://s20.postimg.cc/eosk8cw8t/image.jpg"
+                                src={message.sex === '男' ? config.avatarBoy : config.avatarGirl}
                             />
                             {/*<div className="message-user"> {`${message.username}:`} </div>*/}
                             {/*<div className="message-user"> tom:</div>*/}
@@ -69,11 +71,12 @@ class Messages extends React.Component {
                     );
                 } else {
                     messageElement.push(
-                        <div key={index} className={classnames(styles.message, styles.you)}>
+                        <div key={index} className={classnames(styles.message, styles.you)}
+                             style={{backgroundColor: message.color}}>
                             <Avatar
                                 className={styles.avatar}
                                 alt="Adelle Charles"
-                                src="https://s20.postimg.cc/eosk8cw8t/image.jpg"
+                                src={message.sex === '男' ? config.avatarBoy : config.avatarGirl}
                             />
                             {/*<div className="message-user"> {`${message.username}:`} </div>*/}
                             {message.content}

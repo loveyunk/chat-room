@@ -50,6 +50,9 @@ class LoginForm extends React.Component {
         return (
             <div className={styles.container}>
                 <Paper className={styles.paper} elevation={6}>
+                    <div className={styles.logoWrapper}>
+                        <img src={config.logo} className={styles.logo} alt="logo"/>
+                    </div>
                     {circleLink}
                     {children}
                 </Paper>

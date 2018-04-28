@@ -15,7 +15,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Menu, {MenuItem} from 'material-ui/Menu';
 import {withStyles} from 'material-ui/styles';
 import styles from './style.less';
-import {cookie} from 'utils';
+import {cookie, config} from 'utils';
 import store from 'store2';
 import io from 'socket.io-client';
 
@@ -90,12 +90,13 @@ class ChatRoom extends React.Component {
 
         const {anchorEl} = this.state;
 
-        const {classes, username} = this.props;
+        const {classes, username, sex} = this.props;
 
         const open = Boolean(anchorEl);
 
         const sidebarProps = {
-            username
+            username,
+            avatarSrc: sex === '男' ? config.avatarBoy : config.avatarGirl
         };
 
         return (

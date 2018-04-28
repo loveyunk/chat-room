@@ -7,11 +7,18 @@ import {FormControl, FormControlLabel} from 'material-ui/Form';
 import {connect} from 'react-redux';
 import * as userActions from 'actions/user';
 import {bindActionCreators} from 'redux';
+import {withStyles} from 'material-ui/styles';
 import styles from './Guest.less';
 
 import io from 'socket.io-client';
 
 const socket = io();
+
+const style = theme => ({
+    group: {
+        flexDirection: 'row'
+    }
+});
 
 class Guest extends React.Component {
 
@@ -19,14 +26,14 @@ class Guest extends React.Component {
         super(props);
         this.state = {
             username: '',
-            sex: '',
+            sex: '男',
             usernameError: false
         };
     }
 
     handleGuestLogin = () => {
 
-        const {username} = this.state;
+        const {sex, username} = this.state;
 
         if (username) {
             this.props.setIdentity(1);
@@ -34,7 +41,8 @@ class Guest extends React.Component {
             const _this = this;
 
             const userObj = {
-                username
+                username,
+                sex
             };
 
             socket.emit('enter', userObj);
@@ -63,13 +71,15 @@ class Guest extends React.Component {
 
         const {usernameError} = this.state;
 
+        const {classes} = this.props;
+
         return (
             <div className={styles.container}>
                 <FormControl component="fieldset" required>
                     <RadioGroup
                         aria-label="sex"
                         name="sex"
-                        // className={classes.group}
+                        className={classes.group}
                         value={this.state.sex}
                         onChange={this.handleChange('sex')}
                     >
@@ -109,4 +119,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Guest);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(style)(Guest));

@@ -55,7 +55,7 @@ class Login extends React.Component {
                         _this.props.setUserId(uid);
                     });
 
-                    // 些uid非彼uid
+                    // 些uid非彼uid，后端返回的uid被存到了localStorage中
                     store.set('uid', uid);
 
                     this.props.setUserInfo(userObj);
@@ -128,9 +128,6 @@ class Login extends React.Component {
                         </IconButton>
                     ]}
                 />
-                <div className={styles.logoWrapper}>
-                    <img src={config.logo} className={styles.logo} alt="logo"/>
-                </div>
                 <TextField
                     className={styles.textField}
                     label="用户名"

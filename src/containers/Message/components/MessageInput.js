@@ -2,7 +2,8 @@ import React from 'react';
 import Button from 'material-ui/Button';
 import Icon from 'material-ui/Icon';
 import TextField from 'material-ui/TextField';
-import EmojiPicker from 'emoji-picker-react';
+import 'rc-color-picker/assets/index.css';
+import ColorPicker from 'rc-color-picker';
 import styles from './MessageInput.less';
 import io from 'socket.io-client';
 
@@ -13,7 +14,8 @@ class MessageInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            message: ''
+            message: '',
+            color: '#00acff'
         };
     }
 
@@ -25,7 +27,9 @@ class MessageInput extends React.Component {
                 uid: this.props.uid,
                 username: this.props.username,
                 content: message,
-                time: this.getTime()
+                sex: this.props.sex,
+                time: this.getTime(),
+                color: this.state.color
             };
 
             socket.emit('updateMessages', messageObj);
@@ -70,9 +74,22 @@ class MessageInput extends React.Component {
         });
     };
 
+    changeHandler = (color) => {
+        this.setState({
+            color: color.color
+        });
+    };
+
     render() {
         return (
             <div className={styles.container}>
+
+                <div className={styles.colorPickerWrapper}>
+                    <ColorPicker
+                        color={this.state.color}
+                        onChange={this.changeHandler}
+                    />
+                </div>
                 <Button className={styles.send} onClick={this.send} variant="fab" color="primary">
                     <Icon>send</Icon>
                 </Button>

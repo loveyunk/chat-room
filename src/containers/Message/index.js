@@ -12,7 +12,7 @@ class Message extends React.Component {
     render() {
         return (
             <div className={styles.container}>
-                <UserList userList={this.props.userList} setOnlineNums = {this.props.setOnlineNums}/>
+                <UserList userList={this.props.userList} setOnlineNums={this.props.setOnlineNums}/>
                 <div className={styles.content}>
                     <Messages {...this.props} />
                     <MessageInput {...this.props}/>
@@ -28,7 +28,8 @@ const mapStateToProps = state => {
         uid: state.userInfo.uid,
         userList: state.userInfo.userList,
         messages: state.userInfo.messages,
-        onlineNums: state.userInfo.onlineNums
+        onlineNums: state.userInfo.onlineNums,
+        sex: state.userInfo.sex
     };
 };
 

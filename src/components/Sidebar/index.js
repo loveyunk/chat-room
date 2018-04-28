@@ -11,20 +11,20 @@ class Sidebar extends React.Component {
 
     render() {
 
-        const {username} = this.props;
+        const {username, avatarSrc} = this.props;
 
         return (
             <div className={styles.container}>
                 <Avatar
                     alt="avatar"
-                    src="https://s20.postimg.cc/eosk8cw8t/image.jpg"
+                    src={avatarSrc}
                     className={styles.avatar}
                 />
                 <Typography variant="headline" gutterBottom>
                     {username}
                 </Typography>
                 <Typography variant="subheading" gutterBottom>
-                    Subheading
+                    {/*Subheading*/}
                 </Typography>
                 <List component="nav" className={styles.list}>
                     <ListItem button>

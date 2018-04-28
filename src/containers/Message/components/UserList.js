@@ -3,7 +3,7 @@ import List, {ListItem, ListItemText} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import Menu, {MenuItem} from 'material-ui/Menu';
-import store from 'store2';
+import {config} from 'utils';
 
 import styles from './UserList.less';
 
@@ -33,7 +33,8 @@ class UserList extends React.Component {
         this.props.setOnlineNums(userNums);
 
         for (let uid in userList) {
-            const [username] = [userList[uid].username];
+            const {username, sex} = userList[uid];
+
             // const listbkColor = sex === 'boy' ? '#99BBFF' : '#FF88C2';
             // const avatarbkColor = sex === 'boy' ? '#CCDDFF' : '#FFB7DD';
 
@@ -43,8 +44,8 @@ class UserList extends React.Component {
             userListElement.push(
                 <div key={uid}>
                     <ListItem button>
-                        <Avatar src="/default_avatar.png" onClick={this.handleClick}/>
-                        <ListItemText primary={username} secondary="生活不只眼前的苟且"/>
+                        <Avatar src={sex === '男' ? config.avatarBoy : config.avatarGirl} onClick={this.handleClick}/>
+                        <ListItemText primary={username} secondary=""/>
                     </ListItem>
                     <Divider/>
                 </div>);
