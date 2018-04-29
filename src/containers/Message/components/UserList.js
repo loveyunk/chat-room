@@ -6,13 +6,17 @@ import Menu, {MenuItem} from 'material-ui/Menu';
 import {config} from 'utils';
 
 import styles from './UserList.less';
+// import io from 'socket.io-client';
+//
+// const socket = io();
 
 class UserList extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            anchorEl: null
+            anchorEl: null,
+            privateId: ''
         };
     }
 
@@ -22,6 +26,18 @@ class UserList extends React.Component {
 
     handleClose = () => {
         this.setState({anchorEl: null});
+    };
+
+    handlePrivateChat = () => {
+        console.log(11);
+        // socket.emit('privateChat', '私聊');
+        this.handleClose();
+    };
+
+    getPrivateUid = (uid) => {
+        // this.setState({
+        //     privateId: uid
+        // });
     };
 
     render() {
@@ -42,7 +58,7 @@ class UserList extends React.Component {
             //                                leftAvatar={<Avatar backgroundColor={avatarbkColor}> {username[0]} </Avatar>}
             //                                primaryText={username}/>)
             userListElement.push(
-                <div key={uid}>
+                <div key={uid} onClick={this.getPrivateUid(uid)}>
                     <ListItem button>
                         <Avatar src={sex === '男' ? config.avatarBoy : config.avatarGirl} onClick={this.handleClick}/>
                         <ListItemText primary={username} secondary=""/>
@@ -51,18 +67,18 @@ class UserList extends React.Component {
                 </div>);
         }
 
-        let foo = [];
-        for (let i = 0; i < 15; i++) {
-            foo.push(
-                <div key={i}>
-                    <ListItem button>
-                        <Avatar src="/default_avatar.png" onClick={this.handleClick}/>
-                        <ListItemText primary="远方" secondary="生活不只眼前的苟且"/>
-                    </ListItem>
-                    <Divider/>
-                </div>
-            );
-        }
+        // let foo = [];
+        // for (let i = 0; i < 15; i++) {
+        //     foo.push(
+        //         <div key={i}>
+        //             <ListItem button>
+        //                 <Avatar src="/default_avatar.png" onClick={this.handleClick}/>
+        //                 <ListItemText primary="远方" secondary="生活不只眼前的苟且"/>
+        //             </ListItem>
+        //             <Divider/>
+        //         </div>
+        //     );
+        // }
 
         const {anchorEl} = this.state;
 
@@ -85,9 +101,7 @@ class UserList extends React.Component {
                     open={Boolean(anchorEl)}
                     onClose={this.handleClose}
                 >
-                    <MenuItem onClick={this.handleClose}>添加好友</MenuItem>
-                    <MenuItem onClick={this.handleClose}>忽略此人</MenuItem>
-                    <MenuItem onClick={this.handleClose}>私聊</MenuItem>
+                    <MenuItem onClick={this.handlePrivateChat}>私聊</MenuItem>
                 </Menu>
             </div>
         );

@@ -5,9 +5,9 @@ import TextField from 'material-ui/TextField';
 import 'rc-color-picker/assets/index.css';
 import ColorPicker from 'rc-color-picker';
 import styles from './MessageInput.less';
-import io from 'socket.io-client';
-
-const socket = io();
+// import io from 'socket.io-client';
+//
+// const socket = io();
 
 class MessageInput extends React.Component {
 
@@ -15,7 +15,7 @@ class MessageInput extends React.Component {
         super(props);
         this.state = {
             message: '',
-            color: '#00acff'
+            color: ''
         };
     }
 
@@ -32,7 +32,7 @@ class MessageInput extends React.Component {
                 color: this.state.color
             };
 
-            socket.emit('updateMessages', messageObj);
+            this.props.socket.emit('updateMessages', messageObj);
 
             this.setState({
                 message: ''

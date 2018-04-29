@@ -1,4 +1,5 @@
 import * as actionTypes from 'constants/user';
+import io from 'socket.io-client';
 
 const initialState = {
     uid: '',
@@ -7,7 +8,8 @@ const initialState = {
     userList: {},
     messages: [],
     onlineNums: 0,
-    identity: 0 // 0 注册用户 1 游客
+    identity: 0, // 0 注册用户 1 游客
+    socket: io()
 };
 
 export const userInfo = (state = initialState, action) => {

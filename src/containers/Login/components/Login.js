@@ -13,9 +13,9 @@ import {login} from 'api/user';
 import styles from './Login.less';
 import {config, cookie} from 'utils';
 import store from 'store2';
-import io from 'socket.io-client';
-
-const socket = io();
+// import io from 'socket.io-client';
+//
+// const socket = io();
 
 const {ERR_OK} = config;
 const {setToken} = cookie;
@@ -49,9 +49,9 @@ class Login extends React.Component {
                         sex
                     };
 
-                    socket.emit('enter', userObj);
+                    this.props.socket.emit('enter', userObj);
 
-                    socket.on('uid', function (uid) {
+                    this.props.socket.on('uid', function (uid) {
                         _this.props.setUserId(uid);
                     });
 
@@ -165,7 +165,8 @@ class Login extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        username: state.userInfo.username
+        username: state.userInfo.username,
+        socket: state.userInfo.socket
     };
 };
 

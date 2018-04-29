@@ -43,7 +43,7 @@ class RouterMap extends React.Component {
                         <Route path="register" component={Register}/>
                         <Route path="guest" component={Guest}/>
                     </Route>
-                     {/*其他重定向到 404*/}
+                    {/*其他重定向到 404*/}
                     {/*<Redirect from='*' to='/404'/>*/}
                 </Route>
             </Router>

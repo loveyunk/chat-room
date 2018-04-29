@@ -17,9 +17,6 @@ import {withStyles} from 'material-ui/styles';
 import styles from './style.less';
 import {cookie, config} from 'utils';
 import store from 'store2';
-import io from 'socket.io-client';
-
-const socket = io();
 
 const {removeToken} = cookie;
 
@@ -46,6 +43,9 @@ class ChatRoom extends React.Component {
     }
 
     componentDidMount() {
+
+        const {socket} = this.props;
+
         // 提醒有用户加入
         socket.on('enterUser', username => {
             this.props.updateMessages(username);
@@ -64,7 +64,12 @@ class ChatRoom extends React.Component {
         // 有用户退出
         socket.on('leaveUser', username => {
             this.props.updateMessages({type: 'LEAVE_MESSAGE', username: username})
-        })
+        });
+
+        //
+        // socket.on('aa', info => {
+        //     console.log(info);
+        // });
     }
 
     handleMenu = event => {
@@ -76,7 +81,7 @@ class ChatRoom extends React.Component {
     };
 
     logout = () => {
-        socket.emit('leave', this.props.uid);
+        this.props.socket.emit('leave', this.props.uid);
         // this.props.actions.leaveChatRoom();
         this.handleClose();
         removeToken();
@@ -167,7 +172,8 @@ const mapStateToProps = state => {
         username: state.userInfo.username,
         uid: state.userInfo.uid,
         userList: state.userInfo.userList,
-        identity: state.userInfo.identity
+        identity: state.userInfo.identity,
+        socket: state.userInfo.socket
     };
 };
 

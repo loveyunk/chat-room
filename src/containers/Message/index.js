@@ -12,7 +12,8 @@ class Message extends React.Component {
     render() {
         return (
             <div className={styles.container}>
-                <UserList userList={this.props.userList} setOnlineNums={this.props.setOnlineNums}/>
+                {/*<UserList userList={this.props.userList} setOnlineNums={this.props.setOnlineNums}/>*/}
+                <UserList {...this.props} />
                 <div className={styles.content}>
                     <Messages {...this.props} />
                     <MessageInput {...this.props}/>
@@ -29,7 +30,8 @@ const mapStateToProps = state => {
         userList: state.userInfo.userList,
         messages: state.userInfo.messages,
         onlineNums: state.userInfo.onlineNums,
-        sex: state.userInfo.sex
+        sex: state.userInfo.sex,
+        socket: state.userInfo.socket
     };
 };
 

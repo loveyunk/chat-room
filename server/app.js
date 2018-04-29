@@ -55,6 +55,10 @@ io.on('connection', function (socket) {
         io.emit("updateUserList", userList);
     });
 
+    // socket.on('privateChat', function (id) {
+    //     io.emit("aa", 'afdas1');
+    // });
+
     socket.on('updateMessages', function (messages) {
         io.emit('updateMessages', messages);
     });

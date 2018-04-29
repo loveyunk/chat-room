@@ -10,9 +10,9 @@ import {bindActionCreators} from 'redux';
 import {withStyles} from 'material-ui/styles';
 import styles from './Guest.less';
 
-import io from 'socket.io-client';
-
-const socket = io();
+// import io from 'socket.io-client';
+//
+// const socket = io();
 
 const style = theme => ({
     group: {
@@ -45,9 +45,9 @@ class Guest extends React.Component {
                 sex
             };
 
-            socket.emit('enter', userObj);
+            this.props.socket.emit('enter', userObj);
 
-            socket.on('uid', function (uid) {
+            this.props.socket.on('uid', function (uid) {
                 _this.props.setUserId(uid);
             });
 
@@ -108,7 +108,9 @@ class Guest extends React.Component {
 
 
 const mapStateToProps = state => {
-    return {};
+    return {
+        socket: state.userInfo.socket
+    };
 };
 
 const mapDispatchToProps = dispatch => {
