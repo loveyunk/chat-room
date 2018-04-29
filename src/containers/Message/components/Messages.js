@@ -7,7 +7,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from 'material-ui/Typography';
 import styles from './Messages.less';
-import {config} from 'utils';
+import {config, oneOf} from 'utils';
 
 class Messages extends React.Component {
 
@@ -69,6 +69,8 @@ class Messages extends React.Component {
                             {message.content}
                         </div>
                     );
+                } else if (oneOf(message.uid, this.props.ignoreList)) {
+                    // 忽略某人，信息不可见
                 } else {
                     messageElement.push(
                         <div key={index} className={classnames(styles.message, styles.you)}

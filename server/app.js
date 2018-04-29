@@ -38,6 +38,8 @@ var io = require('socket.io').listen(server);
 // socket.io
 let userList = {};
 
+var users = {};
+
 io.on('connection', function (socket) {
     // 每个用户都会被分配一个唯一的socket.id
     let socketID = socket.id;
@@ -47,7 +49,9 @@ io.on('connection', function (socket) {
     // 向除自己外的其他人，选择他们有新用户加入
     // 向所有人，更新用户列表
     socket.on('enter', function (info) {
-        userList[socketID] = info;
+        let user = info.username;
+        users[user] = socket;//把socket存到全局数组里面去
+        userList[socketID] = Object.assign({}, info, {uid: socketID});
         // 向建立该连接的客户端广播
         socket.emit('uid', socketID);
         // 发送给其他人，XXX进入 要将消息发给除特定 socket 外的其他用户，可以用 broadcast 标志
@@ -55,8 +59,18 @@ io.on('connection', function (socket) {
         io.emit("updateUserList", userList);
     });
 
-    // socket.on('privateChat', function (id) {
-    //     io.emit("aa", 'afdas1');
+    socket.on('privateChat', function (from, to, msg) {
+        if (to in users) {
+            users[to].emit('to' + to, msg);
+        }
+    });
+
+    // socket.on('privateChat', function (from, to, info) {
+    //     var target = arrAllSocket[to];
+    //     if (target) {
+    //         io.emit("privateChat", info);
+    //         // target.emit("pmsg",from,to,msg);
+    //     }
     // });
 
     socket.on('updateMessages', function (messages) {

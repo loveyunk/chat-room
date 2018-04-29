@@ -6,9 +6,6 @@ import Menu, {MenuItem} from 'material-ui/Menu';
 import {config} from 'utils';
 
 import styles from './UserList.less';
-// import io from 'socket.io-client';
-//
-// const socket = io();
 
 class UserList extends React.Component {
 
@@ -16,12 +13,15 @@ class UserList extends React.Component {
         super(props);
         this.state = {
             anchorEl: null,
-            privateId: ''
+            //
+            privateInfo: null
         };
     }
 
-    handleClick = event => {
-        this.setState({anchorEl: event.currentTarget});
+    openMenu = uid => event => {
+        if (uid !== this.props.uid) {
+            this.setState({anchorEl: event.currentTarget});
+        }
     };
 
     handleClose = () => {
@@ -29,15 +29,17 @@ class UserList extends React.Component {
     };
 
     handlePrivateChat = () => {
-        console.log(11);
-        // socket.emit('privateChat', '私聊');
+        this.props.socket.emit('privateChat', this.props.username, this.privateInfo.username, '123');
         this.handleClose();
     };
 
-    getPrivateUid = (uid) => {
-        // this.setState({
-        //     privateId: uid
-        // });
+    getPrivateInfo = (info) => {
+        this.privateInfo = info;
+    };
+
+    handleIgnore = () => {
+        this.props.setIgnoreList(this.privateInfo.uid);
+        this.handleClose();
     };
 
     render() {
@@ -51,49 +53,22 @@ class UserList extends React.Component {
         for (let uid in userList) {
             const {username, sex} = userList[uid];
 
-            // const listbkColor = sex === 'boy' ? '#99BBFF' : '#FF88C2';
-            // const avatarbkColor = sex === 'boy' ? '#CCDDFF' : '#FFB7DD';
-
-            // userlistElement.push(<ListItem style={{backgroundColor: listbkColor}} key={uid}
-            //                                leftAvatar={<Avatar backgroundColor={avatarbkColor}> {username[0]} </Avatar>}
-            //                                primaryText={username}/>)
             userListElement.push(
-                <div key={uid} onClick={this.getPrivateUid(uid)}>
+                <div key={uid} onClick={this.getPrivateInfo(userList[uid])}>
                     <ListItem button>
-                        <Avatar src={sex === '男' ? config.avatarBoy : config.avatarGirl} onClick={this.handleClick}/>
+                        <Avatar src={sex === '男' ? config.avatarBoy : config.avatarGirl} onClick={this.openMenu(uid)}/>
                         <ListItemText primary={username} secondary=""/>
                     </ListItem>
                     <Divider/>
                 </div>);
         }
 
-        // let foo = [];
-        // for (let i = 0; i < 15; i++) {
-        //     foo.push(
-        //         <div key={i}>
-        //             <ListItem button>
-        //                 <Avatar src="/default_avatar.png" onClick={this.handleClick}/>
-        //                 <ListItemText primary="远方" secondary="生活不只眼前的苟且"/>
-        //             </ListItem>
-        //             <Divider/>
-        //         </div>
-        //     );
-        // }
-
         const {anchorEl} = this.state;
 
         return (
             <div className={styles.container}>
-
-                {/*<TextField fullWidth id="input-with-icon-grid" label="With a grid" />*/}
-                {/*<Divider/>*/}
                 <List>
-                    {/*<ListItem button>*/}
-                    {/*<Avatar src="/default_avatar.png" onClick={this.handleClick}/>*/}
-                    {/*<ListItemText primary="Search"/>*/}
-                    {/*</ListItem>*/}
                     {userListElement}
-                    {/*{foo}*/}
                 </List>
                 <Menu
                     id="simple-menu"
@@ -102,6 +77,7 @@ class UserList extends React.Component {
                     onClose={this.handleClose}
                 >
                     <MenuItem onClick={this.handlePrivateChat}>私聊</MenuItem>
+                    <MenuItem onClick={this.handleIgnore}>忽略此人</MenuItem>
                 </Menu>
             </div>
         );

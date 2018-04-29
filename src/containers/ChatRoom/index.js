@@ -67,9 +67,9 @@ class ChatRoom extends React.Component {
         });
 
         //
-        // socket.on('aa', info => {
-        //     console.log(info);
-        // });
+        socket.on('to' + this.props.username, msg => {
+            // alert(msg);
+        });
     }
 
     handleMenu = event => {
@@ -148,9 +148,9 @@ class ChatRoom extends React.Component {
                                     open={open}
                                     onClose={this.handleClose}
                                 >
-                                    <MenuItem onClick={this.handleClose}>Homepage</MenuItem>
-                                    <MenuItem onClick={this.handleClose}><Link to="/">Message</Link></MenuItem>
-                                    <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                                    {/*<MenuItem onClick={this.handleClose}>Homepage</MenuItem>*/}
+                                    {/*<MenuItem onClick={this.handleClose}><Link to="/">Message</Link></MenuItem>*/}
+                                    {/*<MenuItem onClick={this.handleClose}>Profile</MenuItem>*/}
                                     <MenuItem onClick={this.logout}>Logout</MenuItem>
                                 </Menu>
                             </div>

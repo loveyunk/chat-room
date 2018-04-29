@@ -9,3 +9,4 @@ export const setOnlineNums = onlineNums => ({type: actionTypes.SET_ONLINENUMS, o
 export const setSex = sex => ({type: actionTypes.SET_SEX, sex});
 export const setIdentity = identity => ({type: actionTypes.SET_IDENTITY, identity});
 export const leaveChatRoom = () => ({type: actionTypes.LEAVE_CHATROOM});
+export const setIgnoreList = uid => ({type: actionTypes.SET_IGNORELIST, uid});

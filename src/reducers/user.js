@@ -9,6 +9,7 @@ const initialState = {
     messages: [],
     onlineNums: 0,
     identity: 0, // 0 注册用户 1 游客
+    ignoreList: [], // 忽略用户uid列表
     socket: io()
 };
 
@@ -30,6 +31,8 @@ export const userInfo = (state = initialState, action) => {
             return Object.assign({}, state, {sex: action.sex});
         case actionTypes.SET_IDENTITY:
             return Object.assign({}, state, {identity: action.identity});
+        case actionTypes.SET_IGNORELIST:
+            return Object.assign({}, state, {ignoreList: [...state.ignoreList, action.uid]});
         default:
             return state
     }

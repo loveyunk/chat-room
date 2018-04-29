@@ -31,12 +31,14 @@ const mapStateToProps = state => {
         messages: state.userInfo.messages,
         onlineNums: state.userInfo.onlineNums,
         sex: state.userInfo.sex,
+        ignoreList: state.userInfo.ignoreList,
         socket: state.userInfo.socket
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        setIgnoreList: bindActionCreators(userActions.setIgnoreList, dispatch),
         updateMessages: bindActionCreators(userActions.updateMessages, dispatch),
         updateUserList: bindActionCreators(userActions.updateUserList, dispatch),
         clearMessages: bindActionCreators(userActions.clearMessages, dispatch),

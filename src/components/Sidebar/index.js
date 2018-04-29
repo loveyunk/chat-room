@@ -27,22 +27,22 @@ class Sidebar extends React.Component {
                     {/*Subheading*/}
                 </Typography>
                 <List component="nav" className={styles.list}>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <InboxIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Homepage"/>
-                    </ListItem>
-                    <Link to="/profile">
-                        <ListItem button>
-                            <ListItemIcon>
-                                <Icon color="error">
-                                    account_circle
-                                </Icon>
-                            </ListItemIcon>
-                            <ListItemText primary="Profile"/>
-                        </ListItem>
-                    </Link>
+                    {/*<ListItem button>*/}
+                    {/*<ListItemIcon>*/}
+                    {/*<InboxIcon/>*/}
+                    {/*</ListItemIcon>*/}
+                    {/*<ListItemText primary="Homepage"/>*/}
+                    {/*</ListItem>*/}
+                    {/*<Link to="/profile">*/}
+                    {/*<ListItem button>*/}
+                    {/*<ListItemIcon>*/}
+                    {/*<Icon color="error">*/}
+                    {/*account_circle*/}
+                    {/*</Icon>*/}
+                    {/*</ListItemIcon>*/}
+                    {/*<ListItemText primary="Profile"/>*/}
+                    {/*</ListItem>*/}
+                    {/*</Link>*/}
                     <Link to="/">
                         <ListItem button>
                             <ListItemIcon>
@@ -59,7 +59,7 @@ class Sidebar extends React.Component {
                                 brightness_high
                             </Icon>
                         </ListItemIcon>
-                        <ListItemText primary="Settings"/>
+                        <ListItemText primary="Profile"/>
                     </ListItem>
                 </List>
             </div>

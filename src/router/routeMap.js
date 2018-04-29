@@ -10,6 +10,7 @@ import Guest from '../containers/Login/components/Guest';
 import ChatRoom from '../containers/ChatRoom';
 import Message from '../containers/Message';
 import Profile from '../containers/Profile';
+import Test from '../containers/test';
 import store from '../store';
 
 const {getToken} = cookie;
@@ -21,6 +22,7 @@ class RouterMap extends React.Component {
         return (
             <Router history={this.props.history}>
                 <Route component={App}>
+                    <Route path="/test" component={Test}/>
                     <Route path="/" component={ChatRoom}
                            onEnter={(nextState, replace) => {
                                const identity = store.getState().userInfo.identity;
