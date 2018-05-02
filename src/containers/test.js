@@ -1,37 +1,62 @@
 import React from 'react';
-// import Upload from 'material-ui-upload/Upload';
-import Button from 'material-ui/Button';
+import Upload from 'rc-upload';
 
-const foo = {
-    border: '1px solid red'
-};
 
 class Test extends React.Component {
+    constructor(props) {
+        super(props);
+        this.uploaderProps = {
+            action: '/user/sendimg',
+            // data: {a: 1, b: 2},
+            headers: {
+                // Authorization: 'xxxxxxx',
+            },
+            multiple: false,
+            beforeUpload(file) {
+                console.log('beforeUpload', file.name);
+            },
+            onStart: (file) => {
+                console.log('onStart', file.name);
+                // this.refs.inner.abort(file);
+            },
+            onSuccess(file) {
+                console.log('onSuccess', file);
+            },
+            onProgress(step, file) {
+                console.log('onProgress', Math.round(step.percent), file.name);
+            },
+            onError(err) {
+                console.log('onError', err);
+            },
+        };
+        this.state = {
+            destroyed: false,
+        };
+    }
 
-    // onFileLoad = (e, file) => console.log(e.target.result, file.name);
-
-    handleFileChange = event => {
-        console.log(event.target.files[0]);
+    destroy = () => {
+        this.setState({
+            destroyed: true,
+        });
     };
 
     render() {
-        return (
+        if (this.state.destroyed) {
+            return null;
+        }
+        return (<div
+            style={{
+                margin: 100,
+            }}
+        >
+
             <div>
-                <input
-                    accept="image/*"
-                    id="raised-button-file"
-                    type="file"
-                    value=''
-                    className={foo}
-                    onChange={this.handleFileChange}
-                />
-                <label htmlFor="raised-button-file">
-                    <Button variant="raised" component="span">
-                        Upload
-                    </Button>
-                </label>
+                <Upload {...this.uploaderProps} ref="inner"><a>开始上传</a></Upload>
             </div>
-        );
+
+
+            <button onClick={this.destroy}>destroy</button>
+        </div>);
     }
 }
 

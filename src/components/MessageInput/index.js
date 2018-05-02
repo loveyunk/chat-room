@@ -4,10 +4,9 @@ import Icon from 'material-ui/Icon';
 import TextField from 'material-ui/TextField';
 import 'rc-color-picker/assets/index.css';
 import ColorPicker from 'rc-color-picker';
-import styles from './MessageInput.less';
-// import io from 'socket.io-client';
-//
-// const socket = io();
+import styles from './style.less';
+import axios from 'axios';
+import EmojiPicker from 'emoji-picker-react';
 
 class MessageInput extends React.Component {
 
@@ -15,7 +14,8 @@ class MessageInput extends React.Component {
         super(props);
         this.state = {
             message: '',
-            color: ''
+            color: '',
+            emoji: null
         };
     }
 
@@ -23,6 +23,15 @@ class MessageInput extends React.Component {
         const {message} = this.state;
 
         if (message) {
+
+            axios.post('/api/openapi/api', {
+                key: "4393e0bac1fd45e78d0992ce45ee0624",
+                info: message
+            }).then(res => {
+                // console.log(res.data.text);
+                this.props.updateMessages({uid: '001', content: res.data.text, sex: '女', username: 'Cally'});
+            });
+
             const messageObj = {
                 uid: this.props.uid,
                 username: this.props.username,
@@ -65,36 +74,36 @@ class MessageInput extends React.Component {
         this.handleMessage();
     };
 
-    handleEmoji = (val, a, b) => {
-        // console.log(val);
-        // console.log(a);
-        // console.log(b);
-        this.setState({
-            message: val
-        });
-    };
-
     changeHandler = (color) => {
         this.setState({
             color: color.color
         });
     };
 
+    myCallback = (val, obj) => {
+        console.log(val);
+        console.log(obj);
+        this.setState({
+            emoji: <span className={styles.emoji}>11</span>
+        });
+    };
+
     render() {
         return (
             <div className={styles.container}>
-
                 <div className={styles.colorPickerWrapper}>
                     <ColorPicker
                         color={this.state.color}
                         onChange={this.changeHandler}
                     />
                 </div>
+                <div>
+                    {/*<EmojiPicker onEmojiClick={this.myCallback}/>*/}
+                </div>
                 <Button className={styles.send} onClick={this.send} variant="fab" color="primary">
                     <Icon>send</Icon>
                 </Button>
-                <div className={styles.emojiPicker}>
-                </div>
+                {/*<div>{this.state.emoji}</div>*/}
                 <TextField
                     multiline
                     rows={5}

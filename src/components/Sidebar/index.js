@@ -24,25 +24,9 @@ class Sidebar extends React.Component {
                     {username}
                 </Typography>
                 <Typography variant="subheading" gutterBottom>
-                    {/*Subheading*/}
+                    Subheading
                 </Typography>
                 <List component="nav" className={styles.list}>
-                    {/*<ListItem button>*/}
-                    {/*<ListItemIcon>*/}
-                    {/*<InboxIcon/>*/}
-                    {/*</ListItemIcon>*/}
-                    {/*<ListItemText primary="Homepage"/>*/}
-                    {/*</ListItem>*/}
-                    {/*<Link to="/profile">*/}
-                    {/*<ListItem button>*/}
-                    {/*<ListItemIcon>*/}
-                    {/*<Icon color="error">*/}
-                    {/*account_circle*/}
-                    {/*</Icon>*/}
-                    {/*</ListItemIcon>*/}
-                    {/*<ListItemText primary="Profile"/>*/}
-                    {/*</ListItem>*/}
-                    {/*</Link>*/}
                     <Link to="/">
                         <ListItem button>
                             <ListItemIcon>
@@ -50,7 +34,7 @@ class Sidebar extends React.Component {
                                     question_answer
                                 </Icon>
                             </ListItemIcon>
-                            <ListItemText primary="Message"/>
+                            <ListItemText primary="聊天室"/>
                         </ListItem>
                     </Link>
                     <ListItem button>
@@ -59,7 +43,7 @@ class Sidebar extends React.Component {
                                 brightness_high
                             </Icon>
                         </ListItemIcon>
-                        <ListItemText primary="Profile"/>
+                        <ListItemText primary="私聊"/>
                     </ListItem>
                 </List>
             </div>

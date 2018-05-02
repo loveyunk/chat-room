@@ -10,9 +10,8 @@ const initialState = {
     onlineNums: 0,
     identity: 0, // 0 注册用户 1 游客
     ignoreList: [], // 忽略用户uid列表
-    socket: io()
+    socket: io('http://localhost:3001')
 };
-
 export const userInfo = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.SET_USERINFO:

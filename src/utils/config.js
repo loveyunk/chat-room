@@ -5,8 +5,8 @@ export default {
     avatarBoy: '/avatar_boy.png',
     avatarGirl: '/avatar_girl.jpg',
     api: {
-        loginApi: '/user/login',
-        registerApi: '/user/register',
-        userInfo: '/user/info'
+        loginApi: '/robot/user/login',
+        registerApi: '/robot/user/register',
+        userInfo: '/robot/user/info'
     }
 };

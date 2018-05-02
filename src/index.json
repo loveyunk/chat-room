@@ -1,0 +1,12 @@
+{
+    "reqType":0,
+    "perception": {
+        "inputText": {
+            "text": "你好"
+        }
+    },
+    "userInfo": {
+        "apiKey": "4393e0bac1fd45e78d0992ce45ee0624",
+        "userId": "1"
+    }
+}

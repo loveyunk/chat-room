@@ -6,7 +6,7 @@ import Snackbar from 'material-ui/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from 'material-ui/Typography';
-import styles from './Messages.less';
+import styles from './style.less';
 import {config, oneOf} from 'utils';
 
 class Messages extends React.Component {
@@ -71,6 +71,20 @@ class Messages extends React.Component {
                     );
                 } else if (oneOf(message.uid, this.props.ignoreList)) {
                     // 忽略某人，信息不可见
+                } else if (message.uid === '001') {
+                    messageElement.push(
+                        <div key={index} className={classnames(styles.message, styles.you)}
+                             style={{backgroundColor: message.color}}>
+                            <Avatar
+                                className={styles.avatar}
+                                alt="Adelle Charles"
+                                src={message.sex === '男' ? config.avatarBoy : config.avatarGirl}
+                            />
+                            {/*<div className="message-user"> {`${message.username}:`} </div>*/}
+                            {message.content}
+                            {/*<div className="message-time"> {message.time} </div>*/}
+                        </div>
+                    );
                 } else {
                     messageElement.push(
                         <div key={index} className={classnames(styles.message, styles.you)}

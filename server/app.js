@@ -77,6 +77,11 @@ io.on('connection', function (socket) {
         io.emit('updateMessages', messages);
     });
 
+    socket.on('sendImg', (data) => {
+        data.id = socket.id;
+        io.emit('receiveImg', data);
+    });
+
     socket.on('leave', function (uid) {
         if (userList.hasOwnProperty(uid)) {
             socket.broadcast.emit('leaveUser', {username: userList[uid].username, type: LEAVE_MESSAGE});

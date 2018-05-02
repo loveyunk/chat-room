@@ -2,6 +2,8 @@ const express = require('express');
 const User = require('../models/User');
 const router = express.Router();
 const jwt = require('jsonwebtoken'); // 使用jwt签名
+const formidable = require('formidable');
+var path = require('path');
 
 // 返回统一格式
 let responseData;
@@ -121,6 +123,25 @@ router.get('/info', function (req, res) {
         };
         res.json(responseData);
     });
+});
+
+// 发送图片
+router.post('/sendimg', (req, res, next) => {
+    let imgname = null;
+    let form = new formidable.IncomingForm();
+    form.uploadDir = 'public/images';
+    form.keepExtensions = true;
+    // form.maxFieldSize = 2*1024*1024;
+
+    form.parse(req, (err, fields, files) => {
+        // res.send(imgname);
+        console.log(files);
+        res.json({a: path.join(__dirname, files.file.path)});
+    });
+    // form.on('fileBegin', (name, file) => {
+    //     file.path = path.join(__dirname, `../public/images/${file.name}`);
+    //     imgname = file.name;
+    // });
 });
 
 module.exports = router;
