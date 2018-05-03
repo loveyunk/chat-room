@@ -5,7 +5,9 @@ import Typography from 'material-ui/Typography';
 import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
 import InboxIcon from '@material-ui/icons/Inbox';
 import Icon from 'material-ui/Icon';
+import Collapse from 'material-ui/transitions/Collapse';
 import styles from './style.less';
+import classnames from 'classnames';
 
 class Sidebar extends React.Component {
 
@@ -14,7 +16,7 @@ class Sidebar extends React.Component {
         const {username, avatarSrc} = this.props;
 
         return (
-            <div className={styles.container}>
+            <div className={classnames(styles.container)} style={{display: this.props.sidebarVisible ? '': 'none'}}>
                 <Avatar
                     alt="avatar"
                     src={avatarSrc}
@@ -37,14 +39,16 @@ class Sidebar extends React.Component {
                             <ListItemText primary="聊天室"/>
                         </ListItem>
                     </Link>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <Icon color="primary">
-                                brightness_high
-                            </Icon>
-                        </ListItemIcon>
-                        <ListItemText primary="私聊"/>
-                    </ListItem>
+                    <Link to="/private">
+                        <ListItem button>
+                            <ListItemIcon>
+                                <Icon color="primary">
+                                    brightness_high
+                                </Icon>
+                            </ListItemIcon>
+                            <ListItemText primary="私聊"/>
+                        </ListItem>
+                    </Link>
                 </List>
             </div>
         );

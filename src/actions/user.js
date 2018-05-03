@@ -10,3 +10,5 @@ export const setSex = sex => ({type: actionTypes.SET_SEX, sex});
 export const setIdentity = identity => ({type: actionTypes.SET_IDENTITY, identity});
 export const leaveChatRoom = () => ({type: actionTypes.LEAVE_CHATROOM});
 export const setIgnoreList = uid => ({type: actionTypes.SET_IGNORELIST, uid});
+export const setPrivateList = userInfo => ({type: actionTypes.SET_PRIVATE_LIST, userInfo});
+export const updatePrivateMessages = privateMessages => ({type: actionTypes.UPDATE_PRIVATE_MESSAGES, privateMessages});

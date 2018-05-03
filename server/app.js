@@ -23,22 +23,12 @@ app.set('view engine', 'jade');
 var server = app.listen(3001);
 var io = require('socket.io').listen(server);
 
-// var server = app.listen(3001);
-// var io = require('socket.io').listen(server);
-
-// const server = app.listen(3001);
-// const io = require('socket.io')(server);
-// var socket = io.connect('http://example.com:3080');
-//
-// var server = require('http').createServer(app);
-// var io = require('socket.io')(server);
-//
-// server.listen(3001);
-
 // socket.io
 let userList = {};
 
-var users = {};
+let privateUserList = {};
+
+let userSocket = {};
 
 io.on('connection', function (socket) {
     // 每个用户都会被分配一个唯一的socket.id
@@ -49,29 +39,32 @@ io.on('connection', function (socket) {
     // 向除自己外的其他人，选择他们有新用户加入
     // 向所有人，更新用户列表
     socket.on('enter', function (info) {
-        let user = info.username;
-        users[user] = socket;//把socket存到全局数组里面去
+        userSocket[socketID] = socket; // 把socket存到全局数组里面去
         userList[socketID] = Object.assign({}, info, {uid: socketID});
         // 向建立该连接的客户端广播
         socket.emit('uid', socketID);
-        // 发送给其他人，XXX进入 要将消息发给除特定 socket 外的其他用户，可以用 broadcast 标志
+        // 除自己
         socket.broadcast.emit('enterUser', {username: userList[socketID].username, type: 'ENTER_MESSAGE'});
+        // 所有人
         io.emit("updateUserList", userList);
     });
 
-    socket.on('privateChat', function (from, to, msg) {
-        if (to in users) {
-            users[to].emit('to' + to, msg);
-        }
+    // 私聊用户列表
+    socket.on('privateList', function (from, to, userInfo) {
+        privateUserList[from] = Object.assign({}, userInfo, {uid: from});
+        // if (to in userSocket) {
+        userSocket[to].emit('updatePrivateList', privateUserList);
+        // }
     });
 
-    // socket.on('privateChat', function (from, to, info) {
-    //     var target = arrAllSocket[to];
-    //     if (target) {
-    //         io.emit("privateChat", info);
-    //         // target.emit("pmsg",from,to,msg);
-    //     }
-    // });
+    // 一对一
+    socket.on('privateMessage', function (from, to, messages) {
+        userSocket[to].emit('updatePrivateMessage', to, messages);
+        userSocket[from].emit('updatePrivateMessage', to,  messages);
+        // if (to in users) {
+        //     users[to].emit('to' + to, msg);
+        // }
+    });
 
     socket.on('updateMessages', function (messages) {
         io.emit('updateMessages', messages);
@@ -84,8 +77,9 @@ io.on('connection', function (socket) {
 
     socket.on('leave', function (uid) {
         if (userList.hasOwnProperty(uid)) {
-            socket.broadcast.emit('leaveUser', {username: userList[uid].username, type: LEAVE_MESSAGE});
-            delete userList[uid]
+            socket.broadcast.emit('leaveUser', {username: userList[uid].username, type: 'LEAVE_MESSAGE'});
+            delete userList[uid];
+            delete userSocket[uid];
         }
 
         socket.broadcast.emit("updateUserList", userList);

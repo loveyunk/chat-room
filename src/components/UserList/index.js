@@ -1,9 +1,11 @@
 import React from 'react';
+import {hashHistory} from 'react-router';
 import List, {ListItem, ListItemText} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import Menu, {MenuItem} from 'material-ui/Menu';
 import {config, oneOf} from 'utils';
+import PropTypes from 'prop-types';
 
 import style from './style.less';
 
@@ -11,16 +13,16 @@ class UserList extends React.Component {
 
     constructor(props) {
         super(props);
+        this.privateInfo = {};
         this.state = {
             anchorEl: null,
             ignoreList: [],
-            //
-            privateInfo: {}
         };
     }
 
-    openMenu = uid => event => {
-        if (uid !== this.props.uid) {
+    openMenu = userInfo => event => {
+        this.privateInfo = userInfo;
+        if (userInfo.uid !== this.props.uid) {
             this.setState({anchorEl: event.currentTarget});
         }
     };
@@ -30,12 +32,14 @@ class UserList extends React.Component {
     };
 
     handlePrivateChat = () => {
-        this.props.socket.emit('privateChat', this.props.username, this.privateInfo.username, '123');
+        this.props.setPrivateList(Object.assign({}, this.props.privateList, {[this.privateInfo.uid]: this.privateInfo}));
+        this.props.socket.emit('privateList', this.props.uid, this.privateInfo.uid, {
+            username: this.props.username,
+            uid: this.props.uid,
+            sex: this.props.sex
+        });
         this.handleClose();
-    };
-
-    getPrivateInfo = (info) => {
-        this.privateInfo = info;
+        hashHistory.push(`private/${this.privateInfo.uid}`);
     };
 
     handleIgnore = () => {
@@ -58,10 +62,10 @@ class UserList extends React.Component {
             const {username, sex} = userList[uid];
 
             userListElement.push(
-                <div key={uid} className={uid === this.props.uid ? style.self : ''}
-                     onClick={this.getPrivateInfo(userList[uid])}>
+                <div key={uid} className={uid === this.props.uid ? style.self : ''}>
                     <ListItem button>
-                        <Avatar src={sex === '男' ? config.avatarBoy : config.avatarGirl} onClick={this.openMenu(uid)}/>
+                        <Avatar src={sex === '男' ? config.avatarBoy : config.avatarGirl}
+                                onClick={this.openMenu(userList[uid])}/>
                         <ListItemText primary={username} secondary=""/>
                         {oneOf(uid, this.state.ignoreList) ? '' : <div className={style.dot}/>}
                     </ListItem>
@@ -69,17 +73,16 @@ class UserList extends React.Component {
                 </div>);
         }
 
-
-        const foo = (
-            <div className={style.self}>
-                <ListItem button>
-                    <Avatar src={config.avatarBoy}/>
-                    <ListItemText secondary=""/>
-                    <div className={style.dot}/>
-                </ListItem>
-                <Divider/>
-            </div>
-        );
+        // const foo = (
+        //     <div className={style.self}>
+        //         <ListItem button>
+        //             <Avatar src={config.avatarBoy}/>
+        //             <ListItemText secondary=""/>
+        //             <div className={style.dot}/>
+        //         </ListItem>
+        //         <Divider/>
+        //     </div>
+        // );
 
         const {anchorEl} = this.state;
 
@@ -97,11 +100,13 @@ class UserList extends React.Component {
                 >
                     <MenuItem onClick={this.handlePrivateChat}>私聊</MenuItem>
                     <MenuItem
-                        onClick={this.handleIgnore}>{oneOf(this.state.privateInfo.uid, this.state.ignoreList) ? '取消忽略' : '忽略此人'}</MenuItem>
+                        onClick={this.handleIgnore}>忽略此人</MenuItem>
                 </Menu>
             </div>
         );
     }
 }
+
+UserList.propTypes = {};
 
 export default UserList;

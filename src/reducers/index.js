@@ -1,8 +1,10 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 import {userInfo} from './user';
+import {sidebarVisible} from './common';
 
 const rootReducer = combineReducers({
-    userInfo
+    userInfo,
+    sidebarVisible
 });
 
 export default rootReducer;

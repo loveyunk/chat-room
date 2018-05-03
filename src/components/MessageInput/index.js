@@ -5,6 +5,8 @@ import TextField from 'material-ui/TextField';
 import 'rc-color-picker/assets/index.css';
 import ColorPicker from 'rc-color-picker';
 import styles from './style.less';
+import Upload from 'rc-upload';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import EmojiPicker from 'emoji-picker-react';
 
@@ -22,15 +24,16 @@ class MessageInput extends React.Component {
     handleMessage = () => {
         const {message} = this.state;
 
+        const pathname = this.props.router.location.pathname;
+
         if (message) {
 
-            axios.post('/api/openapi/api', {
-                key: "4393e0bac1fd45e78d0992ce45ee0624",
-                info: message
-            }).then(res => {
-                // console.log(res.data.text);
-                this.props.updateMessages({uid: '001', content: res.data.text, sex: '女', username: 'Cally'});
-            });
+            // axios.post('/api/openapi/api', {
+            //     key: "4393e0bac1fd45e78d0992ce45ee0624",
+            //     info: message
+            // }).then(res => {
+            //     this.props.updateMessages({uid: '001', content: res.data.text, sex: '女', username: 'Cally'});
+            // });
 
             const messageObj = {
                 uid: this.props.uid,
@@ -41,7 +44,9 @@ class MessageInput extends React.Component {
                 color: this.state.color
             };
 
-            this.props.socket.emit('updateMessages', messageObj);
+            pathname === '/' ? this.props.socket.emit('updateMessages', messageObj)
+                :
+                this.props.socket.emit('privateMessage', this.props.uid, pathname.slice(9), messageObj);
 
             this.setState({
                 message: ''
@@ -91,11 +96,14 @@ class MessageInput extends React.Component {
     render() {
         return (
             <div className={styles.container}>
-                <div className={styles.colorPickerWrapper}>
+                <div className={styles.toolsWrapper}>
                     <ColorPicker
                         color={this.state.color}
                         onChange={this.changeHandler}
                     />
+                    <div className={styles.upload}>
+                        <Upload ref="inner"><Icon className={styles.imageIcon}>image</Icon></Upload>
+                    </div>
                 </div>
                 <div>
                     {/*<EmojiPicker onEmojiClick={this.myCallback}/>*/}
@@ -119,5 +127,9 @@ class MessageInput extends React.Component {
         );
     }
 }
+
+// MessageInput.propTypes = {
+//     username: PropTypes.String
+// };
 
 export default MessageInput;

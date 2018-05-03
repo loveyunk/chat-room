@@ -7,8 +7,8 @@ import LoginWrapper from '../containers/Login';
 import Login from '../containers/Login/components/Login';
 import Register from '../containers/Login/components/Register';
 import Guest from '../containers/Login/components/Guest';
+import Home from '../containers/Home';
 import ChatRoom from '../containers/ChatRoom';
-import Message from '../containers/Message';
 import Profile from '../containers/Profile';
 import Test from '../containers/test';
 import store from '../store';
@@ -23,7 +23,7 @@ class RouterMap extends React.Component {
             <Router history={this.props.history}>
                 <Route component={App}>
                     <Route path="/test" component={Test}/>
-                    <Route path="/" component={ChatRoom}
+                    <Route path="/" component={Home}
                            onEnter={(nextState, replace) => {
                                const identity = store.getState().userInfo.identity;
                                if (identity !== 1) {
@@ -32,7 +32,8 @@ class RouterMap extends React.Component {
                                    }
                                }
                            }}>
-                        <IndexRoute component={Message}/>
+                        <IndexRoute component={ChatRoom}/>
+                        <Route path="private/:uid" component={ChatRoom}/>
                         <Route path="profile" component={Profile}/>
                     </Route>
                     <Route path="login" component={LoginWrapper}

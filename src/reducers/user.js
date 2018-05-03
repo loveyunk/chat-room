@@ -10,7 +10,9 @@ const initialState = {
     onlineNums: 0,
     identity: 0, // 0 注册用户 1 游客
     ignoreList: [], // 忽略用户uid列表
-    socket: io('http://localhost:3001')
+    socket: io('http://localhost:3001'),
+    privateList: {},
+    privateMessages: {}
 };
 export const userInfo = (state = initialState, action) => {
     switch (action.type) {
@@ -32,6 +34,10 @@ export const userInfo = (state = initialState, action) => {
             return Object.assign({}, state, {identity: action.identity});
         case actionTypes.SET_IGNORELIST:
             return Object.assign({}, state, {ignoreList: [...state.ignoreList, action.uid]});
+        case actionTypes.SET_PRIVATE_LIST:
+            return Object.assign({}, state, {privateList: action.userInfo});
+        case actionTypes.UPDATE_PRIVATE_MESSAGES:
+            return Object.assign({}, state, {privateMessages: action.privateMessages});
         default:
             return state
     }
