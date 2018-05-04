@@ -53,18 +53,17 @@ io.on('connection', function (socket) {
     socket.on('privateList', function (from, to, userInfo) {
         // console.log(userInfo);
         privateUserList[from] = Object.assign({}, userInfo, {uid: from});
-        // if (to in userSocket) {
-        userSocket[to].emit('updatePrivateList', from, privateUserList);
-        // }
+        if (to in userSocket) {
+            userSocket[to].emit('updatePrivateList', from, privateUserList);
+        }
     });
 
     // 一对一
     socket.on('privateMessage', function (from, to, messages) {
-        userSocket[to].emit('updatePrivateMessage', from, messages);
-        userSocket[from].emit('updatePrivateMessage', to, messages);
-        // if (to in users) {
-        //     users[to].emit('to' + to, msg);
-        // }
+        if (to in userSocket) {
+            userSocket[to].emit('updatePrivateMessage', from, messages);
+            userSocket[from].emit('updatePrivateMessage', to, messages);
+        }
     });
 
     socket.on('updateMessages', function (messages) {
@@ -81,6 +80,7 @@ io.on('connection', function (socket) {
             socket.broadcast.emit('leaveUser', {username: userList[uid].username, type: 'LEAVE_MESSAGE'});
             delete userList[uid];
             delete userSocket[uid];
+            delete privateUserList[uid];
         }
 
         socket.broadcast.emit("updateUserList", userList);
@@ -91,6 +91,8 @@ io.on('connection', function (socket) {
         if (userList.hasOwnProperty(socketID)) {
             socket.broadcast.emit('leaveUser', userList[socketID].username);
             delete userList[socketID];
+            delete privateUserList[socketID];
+            delete userSocket[socketID];
         }
 
         socket.broadcast.emit("updateUserList", userList);

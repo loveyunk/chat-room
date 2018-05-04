@@ -18,6 +18,7 @@ class ChatRoom extends React.Component {
                 return obj[p];
             }
         }
+        return [];
     };
 
     render() {
@@ -85,6 +86,25 @@ class ChatRoom extends React.Component {
             clearMessages
         };
 
+        const robotUserListProps = {
+            env: 3,
+            userList: {
+                '001': {
+                    uid: '001',
+                    username: '聊天机器人',
+                    sex: '女'
+                }
+            },
+            uid,
+            socket,
+            username,
+            sex,
+            privateList,
+            setPrivateList,
+            setIgnoreList,
+            setOnlineNums
+        };
+
         let layout = (() => {
             switch (pathname) {
                 case '/':
@@ -100,7 +120,7 @@ class ChatRoom extends React.Component {
                 case '/robot':
                     return (
                         <React.Fragment>
-                            <UserList {...userListProps} />
+                            <UserList {...robotUserListProps} />
                             <div className={styles.content}>
                                 <Messages {...robotMessagesProps} />
                                 <MessageInput {...robotMessageInputProps}/>

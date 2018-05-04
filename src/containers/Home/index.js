@@ -121,7 +121,8 @@ class Home extends React.Component {
         const sidebarProps = {
             username,
             privateList,
-            avatarSrc: sex === '男' ? config.avatarBoy : config.avatarGirl,
+            // avatarSrc: sex === '男' ? config.avatarBoy : config.avatarGirl,
+            sex,
             ...this.props
         };
 
@@ -188,6 +189,7 @@ class Home extends React.Component {
 const mapStateToProps = state => {
     return {
         username: state.userInfo.username,
+        sex: state.userInfo.sex,
         uid: state.userInfo.uid,
         userList: state.userInfo.userList,
         identity: state.userInfo.identity,
