@@ -9,6 +9,17 @@ import Upload from 'rc-upload';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import EmojiPicker from 'emoji-picker-react';
+import {withStyles} from 'material-ui/styles';
+import {getUploadToken} from 'api/user';
+import {getRandomNum} from 'utils';
+import * as qiniu from 'qiniu-js'
+
+const style = theme => ({
+    root: {
+        // height: 'auto',
+        // background: 'red'
+    }
+});
 
 class MessageInput extends React.Component {
 
@@ -21,17 +32,18 @@ class MessageInput extends React.Component {
         };
     }
 
-    handleMessage = () => {
+    handleMessage = (img = '') => {
         const {message} = this.state;
 
-        if (message) {
+        if (message || img) {
             const messageObj = {
                 uid: this.props.uid,
                 username: this.props.username,
                 content: message,
                 sex: this.props.sex,
                 time: this.getTime(),
-                color: this.state.color
+                color: this.state.color,
+                img
             };
 
             if (this.props.env === 3) {
@@ -50,7 +62,6 @@ class MessageInput extends React.Component {
                 return;
             } else {
                 const pathname = this.props.router.location.pathname;
-
 
                 pathname === '/' ? this.props.socket.emit('updateMessages', messageObj)
                     :
@@ -103,6 +114,48 @@ class MessageInput extends React.Component {
     };
 
     render() {
+
+        const {classes} = this.props;
+
+        let _this = this;
+
+        const uploaderProps = {
+
+            customRequest({file}) {
+
+                getUploadToken().then(res => {
+                    let token = res.data.token;
+                    let config = {
+                        useCdnDomain: true,
+                        region: qiniu.region.z0
+                    };
+
+                    let putExtra = {};
+                    let observable = qiniu.upload(file, getRandomNum(), token, putExtra, config);
+
+                    let observer = {
+                        next(res) {
+                            // console.log(1);
+                            // console.log(res);
+                        },
+                        error(err) {
+                            // console.log(2);
+                            // console.log(err);
+                        },
+                        complete(res) {
+                            // console.log(3);
+                            console.log(res);
+                            // res.key
+                            // http://p87jndy6j.bkt.clouddn.com/61713800
+                            _this.handleMessage(`http://p87jndy6j.bkt.clouddn.com/${res.key}`);
+                        }
+                    };
+
+                    let subscription = observable.subscribe(observer);// 上传开始
+                });
+            }
+        };
+
         return (
             <div className={styles.container}>
                 <div className={styles.toolsWrapper}>
@@ -111,7 +164,7 @@ class MessageInput extends React.Component {
                         onChange={this.changeHandler}
                     />
                     <div className={styles.upload}>
-                        <Upload ref="inner"><Icon className={styles.imageIcon}>image</Icon></Upload>
+                        <Upload {...uploaderProps}><Icon className={styles.imageIcon}>image</Icon></Upload>
                     </div>
                 </div>
                 <div>
@@ -125,9 +178,8 @@ class MessageInput extends React.Component {
                     multiline
                     rows={5}
                     rowsMax={60}
-                    placeholder="Type your message..."
+                    placeholder="your message..."
                     fullWidth
-                    className={styles.textField}
                     onKeyPress={this.handleKeyPress}
                     value={this.state.message}
                     onChange={this.handleChange('message')}
@@ -141,4 +193,4 @@ class MessageInput extends React.Component {
 //     username: PropTypes.String
 // };
 
-export default MessageInput;
+export default withStyles(style)(MessageInput);

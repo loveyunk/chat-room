@@ -5,7 +5,6 @@ import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import Menu, {MenuItem} from 'material-ui/Menu';
 import {config, oneOf} from 'utils';
-import PropTypes from 'prop-types';
 
 import style from './style.less';
 
@@ -22,7 +21,7 @@ class UserList extends React.Component {
 
     openMenu = userInfo => event => {
         this.privateInfo = userInfo;
-        if (userInfo.uid !== this.props.uid) {
+        if (userInfo.uid !== this.props.uid && this.props.env === 1) {
             this.setState({anchorEl: event.currentTarget});
         }
     };
@@ -50,6 +49,17 @@ class UserList extends React.Component {
         this.handleClose();
     };
 
+    // goPrivateChat = (uid) => {
+    //     // alert(uid);
+    //     alert(1);
+    // };
+
+    goPrivateChat(uid) {
+        if (this.props.env === 2) {
+            hashHistory.push(`/private/${uid}`);
+        }
+    }
+
     render() {
 
         const userListElement = [];
@@ -62,10 +72,19 @@ class UserList extends React.Component {
             const {username, sex} = userList[uid];
 
             userListElement.push(
-                <div key={uid} className={uid === this.props.uid ? style.self : ''}>
+                <div key={uid} className={uid === this.props.uid ? style.self : ''}
+                     onClick={this.goPrivateChat.bind(this, uid)}>
                     <ListItem button>
-                        <Avatar src={sex === '男' ? config.avatarBoy : config.avatarGirl}
-                                onClick={this.openMenu(userList[uid])}/>
+                        {
+                            this.props.env === 3 ?
+                                <Avatar src={config.logo}
+                                        onClick={this.openMenu(userList[uid])}/>
+                                :
+                                <Avatar src={sex === '男' ? config.avatarBoy : config.avatarGirl}
+                                        onClick={this.openMenu(userList[uid])}/>
+                        }
+                        {/*<Avatar src={sex === '男' ? config.avatarBoy : config.avatarGirl}*/}
+                        {/*onClick={this.openMenu(userList[uid])}/>*/}
                         <ListItemText primary={username} secondary=""/>
                         {oneOf(uid, this.state.ignoreList) ? '' : <div className={style.dot}/>}
                     </ListItem>
@@ -89,7 +108,6 @@ class UserList extends React.Component {
         return (
             <div className={style.container}>
                 <List>
-                    {/*{foo}*/}
                     {userListElement}
                 </List>
                 <Menu

@@ -6,32 +6,57 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        .box {
+            width: 300px;
+            height: 200px;
+            border: 1px solid red;
+            overflow: auto;
+        }
+    </style>
 </head>
 <body>
+
+<div class="box" id="box">
+    oView(alignWithTop)  滚动浏览器窗口或容器元素，以便在当前视窗的可见范围看见当前元素。
+
+    如果alignWithTop为true，或者省略它，窗口会尽可能滚动到自身顶部与元素顶部平齐
+
+    JS：document.getElementById("nn").scrollIntoView(true);
+
+    JQ中没有这个方法，本人暂时么有oView(alignWithTop)  滚动浏览器窗口或容器元素，以便在当前视窗的可见范围看见当前元素。
+
+    如果alignWithTop为true，或者省略它，窗口会尽可能滚动到自身顶部与元素顶部平齐
+
+    JS：document.getElementById("nn").scrollIntoView(true);
+
+    JQ中没有这个方法，本人暂时么有oView(alignWithTop)  滚动浏览器窗口或容器元素，以便在当前视窗的可见范围看见当前元素。
+
+    如果alignWithTop为true，或者省略它，窗口会尽可能滚动到自身顶部与元素顶部平齐
+
+    JS：document.getElementById("nn").scrollIntoView(true);
+
+    JQ中没有这个方法，本人暂时么有oView(alignWithTop)  滚动浏览器窗口或容器元素，以便在当前视窗的可见范围看见当前元素。
+
+    如果alignWithTop为true，或者省略它，窗口会尽可能滚动到自身顶部与元素顶部平齐
+
+    JS：document.getElementById("nn").scrollIntoView(true);
+
+    JQ中没有这个方法，本人暂时么有
+    <!--<div id="msg" style="overflow:hidden;width:480px;"></div>-->
+    <!--<div id="msg_end" style="height:0px; overflow:hidden"></div>-->
+</div>
 
 
 <script>
 
-    let a = {
-    };
+    let o = document.getElementById('box');
+    o.scrollTop = o.scrollHeight;
 
-    // console.log(!!(typeof a.id));
 
-    let id = a.id || 11;
-    console.log(a.id);
-
-    // obj = {
-    //     aa: [1],
-    //     bb: [2]
-    // };
-    //
-    //
-    // let path = 'aa';
-    // for (let p in obj) {
-    //     if (p === path) {
-    //         // return obj[p];
-    //         console.log(obj[p]);
-    //     }
+    // function onGetMessage(context) {
+    //     msg.innerHTML += context;
+    //     msg_end.scrollIntoView();
     // }
 
 </script>

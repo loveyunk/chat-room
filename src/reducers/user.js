@@ -13,7 +13,8 @@ const initialState = {
     socket: io('http://localhost:3001'),
     privateList: {},
     privateMessages: {},
-    robotMessages: []
+    robotMessages: [],
+    avatar: ''
 };
 export const userInfo = (state = initialState, action) => {
     switch (action.type) {
@@ -41,6 +42,8 @@ export const userInfo = (state = initialState, action) => {
             return Object.assign({}, state, {privateMessages: action.privateMessages});
         case actionTypes.UPDATE_ROBOT_MESSAGES:
             return Object.assign({}, state, {robotMessages: [...state.robotMessages, action.robotMessages]});
+        case actionTypes.UPDATE_AVATAR:
+            return Object.assign({}, state, {avatar: action.avatar});
         default:
             return state
     }

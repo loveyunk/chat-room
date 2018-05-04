@@ -7,6 +7,7 @@ export default {
     api: {
         loginApi: '/robot/user/login',
         registerApi: '/robot/user/register',
-        userInfo: '/robot/user/info'
+        userInfo: '/robot/user/info',
+        token: '/robot/user/token'
     }
 };

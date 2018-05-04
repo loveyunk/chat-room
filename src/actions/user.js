@@ -13,3 +13,4 @@ export const setIgnoreList = uid => ({type: actionTypes.SET_IGNORELIST, uid});
 export const setPrivateList = userInfo => ({type: actionTypes.SET_PRIVATE_LIST, userInfo});
 export const updatePrivateMessages = privateMessages => ({type: actionTypes.UPDATE_PRIVATE_MESSAGES, privateMessages});
 export const updateRobotMessages = robotMessages => ({type: actionTypes.UPDATE_ROBOT_MESSAGES, robotMessages});
+export const updateAvatar = avatar => ({type: actionTypes.UPDATE_AVATAR, avatar});

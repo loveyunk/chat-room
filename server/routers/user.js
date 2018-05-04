@@ -4,6 +4,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken'); // 使用jwt签名
 const formidable = require('formidable');
 var path = require('path');
+var qiniu = require('qiniu');
 
 // 返回统一格式
 let responseData;
@@ -142,6 +143,23 @@ router.post('/sendimg', (req, res, next) => {
     //     file.path = path.join(__dirname, `../public/images/${file.name}`);
     //     imgname = file.name;
     // });
+});
+
+router.get('/token', (req, res, next) => {
+    // 七牛上传
+    var accessKey = '427X8jzc9TcUsSfs2utJLwYkIKBXKyGaXpR6u4WW';
+    var secretKey = 'T3c3cJSTjhJ-A4UJ04_xL5fOvuJssCplFs80jBG8';
+    var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
+
+    var options = {
+        scope: 'chatroom',
+        returnBody: '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)","age":$(x:age)}'
+    };
+    var putPolicy = new qiniu.rs.PutPolicy(options);
+    var uploadToken = putPolicy.uploadToken(mac);
+    res.json({
+        token: uploadToken
+    });
 });
 
 module.exports = router;

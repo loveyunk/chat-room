@@ -50,6 +50,7 @@ class ChatRoom extends React.Component {
         };
 
         const privateUserListProps = {
+            env: 2,
             userList: privateList,
             uid,
             socket,

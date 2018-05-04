@@ -19,6 +19,16 @@ class Messages extends React.Component {
         };
     }
 
+    componentDidUpdate() {
+        this.scrollToBottom()
+    }
+
+    // 保持滚动条在最底部
+    scrollToBottom = () => {
+        const node = this.messagesEnd;
+        node.scrollTop = node.scrollHeight;
+    };
+
     clear = () => {
         this.props.clearMessages();
     };
@@ -30,8 +40,6 @@ class Messages extends React.Component {
     render() {
         const messages = this.props.messages;
         const messageElement = [];
-
-        console.log(messages);
 
         for (let [index, message] of messages.entries()) {
             let systemMsg = '';
@@ -65,10 +73,12 @@ class Messages extends React.Component {
                                 alt="Adelle Charles"
                                 src={message.sex === '男' ? config.avatarBoy : config.avatarGirl}
                             />
+                            {message.img && <img className={styles.imgMessage} src={message.img} alt=""/>}
                             {/*<div className="message-user"> {`${message.username}:`} </div>*/}
                             {/*<div className="message-user"> tom:</div>*/}
                             {/*<div className="message-time"> {message.time} </div>*/}
                             {message.content}
+                            <span className={styles.time}>{message.time}</span>
                         </div>
                     );
                 } else if (oneOf(message.uid, this.props.ignoreList)) {
@@ -80,10 +90,12 @@ class Messages extends React.Component {
                             <Avatar
                                 className={styles.avatar}
                                 alt="Adelle Charles"
-                                src={message.sex === '男' ? config.avatarBoy : config.avatarGirl}
+                                src={config.logo}
                             />
                             {/*<div className="message-user"> {`${message.username}:`} </div>*/}
+                            {message.img && <img className={styles.imgMessage} src={message.img} alt=""/>}
                             {message.content}
+                            <span className={styles.time}>{message.time}</span>
                             {/*<div className="message-time"> {message.time} </div>*/}
                         </div>
                     );
@@ -97,7 +109,9 @@ class Messages extends React.Component {
                                 src={message.sex === '男' ? config.avatarBoy : config.avatarGirl}
                             />
                             {/*<div className="message-user"> {`${message.username}:`} </div>*/}
+                            {message.img && <img className={styles.imgMessage} src={message.img} alt=""/>}
                             {message.content}
+                            <span className={styles.time}>{message.time}</span>
                             {/*<div className="message-time"> {message.time} </div>*/}
                         </div>
                     );
@@ -137,7 +151,9 @@ class Messages extends React.Component {
                         <DeleteIcon/>
                     </IconButton>
                 </div>
-                <div className={styles.content}>
+                <div className={styles.content} ref={(el) => {
+                    this.messagesEnd = el
+                }}>
                     {messageElement}
                 </div>
             </div>
