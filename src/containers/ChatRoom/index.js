@@ -24,9 +24,10 @@ class ChatRoom extends React.Component {
 
         const pathname = this.props.router.location.pathname;
 
-        const {userList, uid, socket, username, sex, privateList, onlineNums, setIgnoreList, messages, ignoreList, setOnlineNums, setPrivateList, clearMessages} = this.props;
+        const {userList, uid, socket, username, sex, privateList, onlineNums, setIgnoreList, messages, ignoreList, setOnlineNums, setPrivateList, clearMessages, updateRobotMessages} = this.props;
 
         const userListProps = {
+            env: 1,
             userList,
             uid,
             socket,
@@ -36,6 +37,15 @@ class ChatRoom extends React.Component {
             setPrivateList,
             setIgnoreList,
             setOnlineNums
+        };
+
+        const messagesProps = {
+            env: 1,
+            messages,
+            uid,
+            ignoreList,
+            onlineNums,
+            clearMessages
         };
 
         const privateUserListProps = {
@@ -50,14 +60,6 @@ class ChatRoom extends React.Component {
             setOnlineNums
         };
 
-        const messagesProps = {
-            messages,
-            uid,
-            ignoreList,
-            onlineNums,
-            clearMessages
-        };
-
         const privateMessagesProps = {
             messages: (() => this.getPrivateMessage(this.props.privateMessages))(),
             uid,
@@ -66,10 +68,27 @@ class ChatRoom extends React.Component {
             clearMessages
         };
 
-        return (
-            <div className={styles.container}>
-                {
-                    pathname === '/' ?
+        const robotMessageInputProps = {
+            env: 3,
+            uid,
+            username,
+            sex,
+            socket,
+            updateRobotMessages
+        };
+
+        const robotMessagesProps = {
+            messages: this.props.robotMessages,
+            uid,
+            ignoreList,
+            onlineNums,
+            clearMessages
+        };
+
+        let layout = (() => {
+            switch (pathname) {
+                case '/':
+                    return (
                         <React.Fragment>
                             <UserList {...userListProps} />
                             <div className={styles.content}>
@@ -77,7 +96,19 @@ class ChatRoom extends React.Component {
                                 <MessageInput {...this.props}/>
                             </div>
                         </React.Fragment>
-                        :
+                    );
+                case '/robot':
+                    return (
+                        <React.Fragment>
+                            <UserList {...userListProps} />
+                            <div className={styles.content}>
+                                <Messages {...robotMessagesProps} />
+                                <MessageInput {...robotMessageInputProps}/>
+                            </div>
+                        </React.Fragment>
+                    );
+                default:
+                    return (
                         <React.Fragment>
                             <UserList {...privateUserListProps} />
                             <div className={styles.content}>
@@ -85,6 +116,30 @@ class ChatRoom extends React.Component {
                                 <MessageInput {...this.props}/>
                             </div>
                         </React.Fragment>
+                    );
+            }
+        })();
+
+        return (
+            <div className={styles.container}>
+                {
+                    layout
+                    // pathname === '/' || pathname === '/robot' ?
+                    //     <React.Fragment>
+                    //         <UserList {...userListProps} />
+                    //         <div className={styles.content}>
+                    //             <Messages {...messagesProps} />
+                    //             <MessageInput {...this.props}/>
+                    //         </div>
+                    //     </React.Fragment>
+                    //     :
+                    //     <React.Fragment>
+                    //         <UserList {...privateUserListProps} />
+                    //         <div className={styles.content}>
+                    //             <Messages {...privateMessagesProps} />
+                    //             <MessageInput {...this.props}/>
+                    //         </div>
+                    //     </React.Fragment>
                 }
             </div>
         );
@@ -102,7 +157,8 @@ const mapStateToProps = state => {
         ignoreList: state.userInfo.ignoreList,
         privateList: state.userInfo.privateList,
         privateMessages: state.userInfo.privateMessages,
-        socket: state.userInfo.socket
+        socket: state.userInfo.socket,
+        robotMessages: state.userInfo.robotMessages
     };
 };
 
@@ -114,7 +170,8 @@ const mapDispatchToProps = dispatch => {
         updateUserList: bindActionCreators(userActions.updateUserList, dispatch),
         clearMessages: bindActionCreators(userActions.clearMessages, dispatch),
         setOnlineNums: bindActionCreators(userActions.setOnlineNums, dispatch),
-        setPrivateList: bindActionCreators(userActions.setPrivateList, dispatch)
+        setPrivateList: bindActionCreators(userActions.setPrivateList, dispatch),
+        updateRobotMessages: bindActionCreators(userActions.updateRobotMessages, dispatch)
     };
 };
 

@@ -34,6 +34,8 @@ class RouterMap extends React.Component {
                            }}>
                         <IndexRoute component={ChatRoom}/>
                         <Route path="private/:uid" component={ChatRoom}/>
+                        <Route path="private" component={ChatRoom}/>
+                        <Route path="robot" component={ChatRoom}/>
                         <Route path="profile" component={Profile}/>
                     </Route>
                     <Route path="login" component={LoginWrapper}

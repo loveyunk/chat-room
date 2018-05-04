@@ -51,16 +51,17 @@ io.on('connection', function (socket) {
 
     // 私聊用户列表
     socket.on('privateList', function (from, to, userInfo) {
+        // console.log(userInfo);
         privateUserList[from] = Object.assign({}, userInfo, {uid: from});
         // if (to in userSocket) {
-        userSocket[to].emit('updatePrivateList', privateUserList);
+        userSocket[to].emit('updatePrivateList', from, privateUserList);
         // }
     });
 
     // 一对一
     socket.on('privateMessage', function (from, to, messages) {
-        userSocket[to].emit('updatePrivateMessage', to, messages);
-        userSocket[from].emit('updatePrivateMessage', to,  messages);
+        userSocket[to].emit('updatePrivateMessage', from, messages);
+        userSocket[from].emit('updatePrivateMessage', to, messages);
         // if (to in users) {
         //     users[to].emit('to' + to, msg);
         // }

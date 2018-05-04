@@ -13,10 +13,12 @@ class Sidebar extends React.Component {
 
     render() {
 
-        const {username, avatarSrc} = this.props;
+        const {username, avatarSrc, privateList} = this.props;
+
+        // let privateUrl = privateList
 
         return (
-            <div className={classnames(styles.container)} style={{display: this.props.sidebarVisible ? '': 'none'}}>
+            <div className={classnames(styles.container)} style={{display: this.props.sidebarVisible ? '' : 'none'}}>
                 <Avatar
                     alt="avatar"
                     src={avatarSrc}
@@ -47,6 +49,16 @@ class Sidebar extends React.Component {
                                 </Icon>
                             </ListItemIcon>
                             <ListItemText primary="私聊"/>
+                        </ListItem>
+                    </Link>
+                    <Link to="/robot">
+                        <ListItem button>
+                            <ListItemIcon>
+                                <Icon color="primary">
+                                    brightness_high
+                                </Icon>
+                            </ListItemIcon>
+                            <ListItemText primary="聊天机器人"/>
                         </ListItem>
                     </Link>
                 </List>

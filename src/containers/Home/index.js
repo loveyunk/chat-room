@@ -69,13 +69,14 @@ class Home extends React.Component {
         });
 
         // 更新私聊用户列表
-        socket.on('updatePrivateList', userList => {
+        socket.on('updatePrivateList', (from, userList) => {
             alert('有人向你发起了私聊');
             this.props.setPrivateList(userList);
-
+            // console.log(userList);
+            hashHistory.push(`/private/${from}`);
         });
 
-        //
+        // 私聊信息
         socket.on('updatePrivateMessage', (to, messages) => {
             let msg;
             let tml = this.props.privateMessages[to] || [];
@@ -113,12 +114,13 @@ class Home extends React.Component {
 
         const {anchorEl} = this.state;
 
-        const {classes, username, sex} = this.props;
+        const {classes, username, sex, privateList} = this.props;
 
         const open = Boolean(anchorEl);
 
         const sidebarProps = {
             username,
+            privateList,
             avatarSrc: sex === '男' ? config.avatarBoy : config.avatarGirl,
             ...this.props
         };
@@ -191,7 +193,8 @@ const mapStateToProps = state => {
         identity: state.userInfo.identity,
         socket: state.userInfo.socket,
         sidebarVisible: state.sidebarVisible,
-        privateMessages: state.userInfo.privateMessages
+        privateMessages: state.userInfo.privateMessages,
+        privateList: state.userInfo.privateList
     };
 };
 

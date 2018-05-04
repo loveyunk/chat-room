@@ -24,17 +24,7 @@ class MessageInput extends React.Component {
     handleMessage = () => {
         const {message} = this.state;
 
-        const pathname = this.props.router.location.pathname;
-
         if (message) {
-
-            // axios.post('/api/openapi/api', {
-            //     key: "4393e0bac1fd45e78d0992ce45ee0624",
-            //     info: message
-            // }).then(res => {
-            //     this.props.updateMessages({uid: '001', content: res.data.text, sex: '女', username: 'Cally'});
-            // });
-
             const messageObj = {
                 uid: this.props.uid,
                 username: this.props.username,
@@ -44,13 +34,32 @@ class MessageInput extends React.Component {
                 color: this.state.color
             };
 
-            pathname === '/' ? this.props.socket.emit('updateMessages', messageObj)
-                :
-                this.props.socket.emit('privateMessage', this.props.uid, pathname.slice(9), messageObj);
+            if (this.props.env === 3) {
+                this.props.updateRobotMessages(messageObj);
 
-            this.setState({
-                message: ''
-            });
+                axios.post('/api/openapi/api', {
+                    key: "4393e0bac1fd45e78d0992ce45ee0624",
+                    info: message
+                }).then(res => {
+                    this.props.updateRobotMessages({uid: '001', content: res.data.text, sex: '女', username: 'Cally'});
+                });
+
+                this.setState({
+                    message: ''
+                });
+                return;
+            } else {
+                const pathname = this.props.router.location.pathname;
+
+
+                pathname === '/' ? this.props.socket.emit('updateMessages', messageObj)
+                    :
+                    this.props.socket.emit('privateMessage', this.props.uid, pathname.slice(9), messageObj);
+
+                this.setState({
+                    message: ''
+                });
+            }
         }
     };
 

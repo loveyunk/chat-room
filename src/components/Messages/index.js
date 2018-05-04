@@ -31,6 +31,8 @@ class Messages extends React.Component {
         const messages = this.props.messages;
         const messageElement = [];
 
+        console.log(messages);
+
         for (let [index, message] of messages.entries()) {
             let systemMsg = '';
 

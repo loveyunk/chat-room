@@ -12,7 +12,8 @@ const initialState = {
     ignoreList: [], // 忽略用户uid列表
     socket: io('http://localhost:3001'),
     privateList: {},
-    privateMessages: {}
+    privateMessages: {},
+    robotMessages: []
 };
 export const userInfo = (state = initialState, action) => {
     switch (action.type) {
@@ -38,6 +39,8 @@ export const userInfo = (state = initialState, action) => {
             return Object.assign({}, state, {privateList: action.userInfo});
         case actionTypes.UPDATE_PRIVATE_MESSAGES:
             return Object.assign({}, state, {privateMessages: action.privateMessages});
+        case actionTypes.UPDATE_ROBOT_MESSAGES:
+            return Object.assign({}, state, {robotMessages: [...state.robotMessages, action.robotMessages]});
         default:
             return state
     }
