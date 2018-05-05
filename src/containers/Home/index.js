@@ -12,6 +12,7 @@ import {connect} from 'react-redux';
 import * as userActions from 'actions/user';
 import * as commonActions from 'actions/common';
 import {bindActionCreators} from 'redux';
+import ForwardIcon from '@material-ui/icons/Forward';
 import Sidebar from 'components/Sidebar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Menu, {MenuItem} from 'material-ui/Menu';
@@ -40,7 +41,11 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            anchorEl: null
+            anchorEl: null,
+            open: false,
+            privateUserList: {},
+            privateFrom: '',
+            message: ''
         };
     }
 
@@ -69,11 +74,24 @@ class Home extends React.Component {
         });
 
         // 更新私聊用户列表
-        socket.on('updatePrivateList', (from, userList) => {
-            alert('有人向你发起了私聊');
-            this.props.setPrivateList(userList);
-            // console.log(userList);
-            hashHistory.push(`/private/${from}`);
+        socket.on('updatePrivateList', (from, username, userList) => {
+            // alert('有人向你发起了私聊');
+            this.setState({
+                open: true,
+                message: `${username} 向你发起了私聊`
+            });
+
+            this.setState({
+                privateUserList: userList,
+                privateFrom: from
+            });
+            // this.privateUserList = userList;
+            // this.privateFrom = from;
+
+            // if (!this.state.open) {
+            //     this.props.setPrivateList(userList);
+            //     hashHistory.push(`/private/${from}`);
+            // }
         });
 
         // 私聊信息
@@ -84,6 +102,12 @@ class Home extends React.Component {
             this.props.updatePrivateMessages(msg);
         });
     }
+
+    handlePrivate = () => {
+        this.props.setPrivateList(this.state.privateUserList);
+        hashHistory.push(`/private/${this.state.privateFrom}`);
+        this.handleModalClose();
+    };
 
     handleMenu = event => {
         this.setState({anchorEl: event.currentTarget});
@@ -110,6 +134,10 @@ class Home extends React.Component {
             this.props.showSidebar();
     };
 
+    handleModalClose = () => {
+        this.setState({open: false});
+    };
+
     render() {
 
         const {anchorEl} = this.state;
@@ -129,6 +157,25 @@ class Home extends React.Component {
 
         return (
             <div className={styles.container}>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                    open={this.state.open}
+                    onClose={this.handleModalClose}
+                    message={this.state.message}
+                    action={[
+                        <IconButton
+                            key="forward"
+                            aria-label="Close"
+                            color="inherit"
+                            onClick={this.handlePrivate}
+                        >
+                            <ForwardIcon/>
+                        </IconButton>
+                    ]}
+                />
                 <MuiThemeProvider theme={theme}>
                     <AppBar
                         className={styles.appBar}

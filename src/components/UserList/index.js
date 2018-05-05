@@ -32,10 +32,11 @@ class UserList extends React.Component {
 
     handlePrivateChat = () => {
         this.props.setPrivateList(Object.assign({}, this.props.privateList, {[this.privateInfo.uid]: this.privateInfo}));
-        this.props.socket.emit('privateList', this.props.uid, this.privateInfo.uid, {
+        this.props.socket.emit('privateList', this.props.uid, this.privateInfo.uid, this.props.username, {
             username: this.props.username,
             uid: this.props.uid,
-            sex: this.props.sex
+            sex: this.props.sex,
+            avatar: this.props.avatar
         });
         this.handleClose();
         hashHistory.push(`private/${this.privateInfo.uid}`);

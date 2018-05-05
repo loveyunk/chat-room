@@ -50,11 +50,11 @@ io.on('connection', function (socket) {
     });
 
     // 私聊用户列表
-    socket.on('privateList', function (from, to, userInfo) {
+    socket.on('privateList', function (from, to, username, userInfo) {
         // console.log(userInfo);
         privateUserList[from] = Object.assign({}, userInfo, {uid: from});
         if (to in userSocket) {
-            userSocket[to].emit('updatePrivateList', from, privateUserList);
+            userSocket[to].emit('updatePrivateList', from, username, privateUserList);
         }
     });
 
