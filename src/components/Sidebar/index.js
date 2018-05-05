@@ -10,11 +10,13 @@ import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 import teal from 'material-ui/colors/teal';
 import green from 'material-ui/colors/cyan';
 import purple from 'material-ui/colors/indigo';
-import { withStyles } from 'material-ui/styles';
+import {withStyles} from 'material-ui/styles';
 import {config, getRandomNum} from 'utils';
 import {getUploadToken} from 'api/user';
 import * as qiniu from 'qiniu-js';
 import Upload from 'rc-upload';
+import {updateAvatar} from 'api/user';
+import store from 'store2';
 
 const theme = createMuiTheme({
     palette: {
@@ -45,7 +47,7 @@ class Sidebar extends React.Component {
 
     render() {
 
-        const {classes,username, sex, privateList} = this.props;
+        const {classes, username, sex, privateList} = this.props;
 
         let privateUrl = '/private/';
 
@@ -56,7 +58,7 @@ class Sidebar extends React.Component {
             break;
         }
 
-
+        let _this = this;
 
         const uploaderProps = {
 
@@ -82,11 +84,12 @@ class Sidebar extends React.Component {
                             // console.log(err);
                         },
                         complete(res) {
-                            // console.log(3);
-                            console.log(res);
-                            // res.key
-                            // http://p87jndy6j.bkt.clouddn.com/61713800
-                            // _this.handleMessage(`http://p87jndy6j.bkt.clouddn.com/${res.key}`);
+                            let id = store('uid');
+                            updateAvatar({id, avatar: `http://p87jndy6j.bkt.clouddn.com/${res.key}`})
+                                .then(res => {
+                                    console.log(res.data.data);
+                                    _this.props.updateAvatar(res.data.data);
+                                });
                         }
                     };
 
@@ -102,7 +105,7 @@ class Sidebar extends React.Component {
                     <Upload {...uploaderProps}>
                         <Avatar
                             alt="avatar"
-                            src={sex === '男' ? config.avatarBoy : config.avatarGirl}
+                            src={this.props.avatar || (sex === '男' ? config.avatarBoy : config.avatarGirl)}
                             className={styles.avatar}
                             onClick={this.changeAvatar}
                         />
@@ -145,14 +148,14 @@ class Sidebar extends React.Component {
                             </ListItem>
                         </Link>
                         {/*<Link to="/profile">*/}
-                            {/*<ListItem button>*/}
-                                {/*<ListItemIcon>*/}
-                                    {/*<Icon color="action" className={classes.colorAction}>*/}
-                                        {/*account_circle*/}
-                                    {/*</Icon>*/}
-                                {/*</ListItemIcon>*/}
-                                {/*<ListItemText primary="个人中心"/>*/}
-                            {/*</ListItem>*/}
+                        {/*<ListItem button>*/}
+                        {/*<ListItemIcon>*/}
+                        {/*<Icon color="action" className={classes.colorAction}>*/}
+                        {/*account_circle*/}
+                        {/*</Icon>*/}
+                        {/*</ListItemIcon>*/}
+                        {/*<ListItemText primary="个人中心"/>*/}
+                        {/*</ListItem>*/}
                         {/*</Link>*/}
                     </List>
                 </div>

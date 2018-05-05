@@ -43,10 +43,11 @@ class Login extends React.Component {
             login({username, password}).then(res => {
                 if (res.data.error === ERR_OK) {
                     setToken(res.data.token);
-                    const {uid, username, sex} = res.data.data;
+                    const {uid, username, sex, avatar} = res.data.data;
                     const userObj = {
                         username,
-                        sex
+                        sex,
+                        avatar
                     };
 
                     this.props.socket.emit('enter', userObj);

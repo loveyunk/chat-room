@@ -1,7 +1,7 @@
 import {request, config} from 'utils';
 
 const {api} = config;
-const {loginApi, registerApi, userInfo, token} = api;
+const {loginApi, registerApi, userInfo, token, avatar} = api;
 
 // 登录
 export function login(params) {
@@ -35,6 +35,15 @@ export function getUploadToken(params) {
     return request({
         method: 'get',
         url: token,
+        data: params
+    });
+}
+
+// 更新头像
+export function updateAvatar(params) {
+    return request({
+        method: 'post',
+        url: avatar,
         data: params
     });
 }

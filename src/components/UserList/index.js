@@ -69,7 +69,7 @@ class UserList extends React.Component {
         this.props.setOnlineNums(userNums);
 
         for (let uid in userList) {
-            const {username, sex} = userList[uid];
+            const {username, sex, avatar} = userList[uid];
 
             userListElement.push(
                 <div key={uid} className={uid === this.props.uid ? style.self : ''}
@@ -80,7 +80,7 @@ class UserList extends React.Component {
                                 <Avatar src={config.logo}
                                         onClick={this.openMenu(userList[uid])}/>
                                 :
-                                <Avatar src={sex === '男' ? config.avatarBoy : config.avatarGirl}
+                                <Avatar src={avatar || (sex === '男' ? config.avatarBoy : config.avatarGirl)}
                                         onClick={this.openMenu(userList[uid])}/>
                         }
                         {/*<Avatar src={sex === '男' ? config.avatarBoy : config.avatarGirl}*/}

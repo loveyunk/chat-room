@@ -43,6 +43,7 @@ class MessageInput extends React.Component {
                 sex: this.props.sex,
                 time: this.getTime(),
                 color: this.state.color,
+                avatar: this.props.avatar,
                 img
             };
 

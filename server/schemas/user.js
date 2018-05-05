@@ -17,7 +17,5 @@ module.exports = new mongoose.Schema({
     age: Number,
     // 性别
     sex: String,
-    token: {
-        type: String
-    }
+    avatar: String
 });

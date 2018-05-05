@@ -114,7 +114,7 @@ class Home extends React.Component {
 
         const {anchorEl} = this.state;
 
-        const {classes, username, sex, privateList} = this.props;
+        const {classes, username, sex, privateList, avatar} = this.props;
 
         const open = Boolean(anchorEl);
 
@@ -123,6 +123,7 @@ class Home extends React.Component {
             privateList,
             // avatarSrc: sex === '男' ? config.avatarBoy : config.avatarGirl,
             sex,
+            avatar,
             ...this.props
         };
 
@@ -196,7 +197,8 @@ const mapStateToProps = state => {
         socket: state.userInfo.socket,
         sidebarVisible: state.sidebarVisible,
         privateMessages: state.userInfo.privateMessages,
-        privateList: state.userInfo.privateList
+        privateList: state.userInfo.privateList,
+        avatar: state.userInfo.avatar
     };
 };
 
@@ -208,7 +210,8 @@ const mapDispatchToProps = dispatch => {
         showSidebar: bindActionCreators(commonActions.showSidebar, dispatch),
         hideSidebar: bindActionCreators(commonActions.hideSidebar, dispatch),
         setPrivateList: bindActionCreators(userActions.setPrivateList, dispatch),
-        updatePrivateMessages: bindActionCreators(userActions.updatePrivateMessages, dispatch)
+        updatePrivateMessages: bindActionCreators(userActions.updatePrivateMessages, dispatch),
+        updateAvatar: bindActionCreators(userActions.updateAvatar, dispatch)
     };
 };
 

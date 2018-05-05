@@ -25,7 +25,7 @@ class ChatRoom extends React.Component {
 
         const pathname = this.props.router.location.pathname;
 
-        const {userList, uid, socket, username, sex, privateList, onlineNums, setIgnoreList, messages, ignoreList, setOnlineNums, setPrivateList, clearMessages, updateRobotMessages} = this.props;
+        const {userList, uid, socket, username, sex, privateList, avatar, onlineNums, setIgnoreList, messages, ignoreList, setOnlineNums, setPrivateList, clearMessages, updateRobotMessages} = this.props;
 
         const userListProps = {
             env: 1,
@@ -37,7 +37,8 @@ class ChatRoom extends React.Component {
             privateList,
             setPrivateList,
             setIgnoreList,
-            setOnlineNums
+            setOnlineNums,
+            avatar
         };
 
         const messagesProps = {
@@ -46,7 +47,8 @@ class ChatRoom extends React.Component {
             uid,
             ignoreList,
             onlineNums,
-            clearMessages
+            clearMessages,
+            avatar
         };
 
         const privateUserListProps = {
@@ -59,7 +61,8 @@ class ChatRoom extends React.Component {
             privateList,
             setPrivateList,
             setIgnoreList,
-            setOnlineNums
+            setOnlineNums,
+            avatar
         };
 
         const privateMessagesProps = {
@@ -67,7 +70,8 @@ class ChatRoom extends React.Component {
             uid,
             ignoreList,
             onlineNums,
-            clearMessages
+            clearMessages,
+            avatar
         };
 
         const robotMessageInputProps = {
@@ -76,7 +80,8 @@ class ChatRoom extends React.Component {
             username,
             sex,
             socket,
-            updateRobotMessages
+            updateRobotMessages,
+            avatar
         };
 
         const robotMessagesProps = {
@@ -84,7 +89,8 @@ class ChatRoom extends React.Component {
             uid,
             ignoreList,
             onlineNums,
-            clearMessages
+            clearMessages,
+            avatar
         };
 
         const robotUserListProps = {
@@ -179,7 +185,8 @@ const mapStateToProps = state => {
         privateList: state.userInfo.privateList,
         privateMessages: state.userInfo.privateMessages,
         socket: state.userInfo.socket,
-        robotMessages: state.userInfo.robotMessages
+        robotMessages: state.userInfo.robotMessages,
+        avatar: state.userInfo.avatar
     };
 };
 

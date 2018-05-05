@@ -49,7 +49,8 @@ router.post('/login', function (req, res) {
         responseData.data = {
             uid: userInfo._id,
             username: userInfo.username,
-            sex: userInfo.sex
+            sex: userInfo.sex,
+            avatar: userInfo.avatar
         };
         res.json(responseData);
     });
@@ -120,7 +121,8 @@ router.get('/info', function (req, res) {
         responseData.data = {
             uid: userInfo._id,
             username: userInfo.username,
-            sex: userInfo.sex
+            sex: userInfo.sex,
+            avatar: userInfo.avatar
         };
         res.json(responseData);
     });
@@ -145,20 +147,48 @@ router.post('/sendimg', (req, res, next) => {
     // });
 });
 
+// 七牛token
 router.get('/token', (req, res, next) => {
     // 七牛上传
-    var accessKey = '427X8jzc9TcUsSfs2utJLwYkIKBXKyGaXpR6u4WW';
-    var secretKey = 'T3c3cJSTjhJ-A4UJ04_xL5fOvuJssCplFs80jBG8';
-    var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
+    const accessKey = '427X8jzc9TcUsSfs2utJLwYkIKBXKyGaXpR6u4WW';
+    const secretKey = 'T3c3cJSTjhJ-A4UJ04_xL5fOvuJssCplFs80jBG8';
+    const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
 
-    var options = {
+    let options = {
         scope: 'chatroom',
         returnBody: '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)","age":$(x:age)}'
     };
-    var putPolicy = new qiniu.rs.PutPolicy(options);
-    var uploadToken = putPolicy.uploadToken(mac);
+    let putPolicy = new qiniu.rs.PutPolicy(options);
+    let uploadToken = putPolicy.uploadToken(mac);
     res.json({
         token: uploadToken
+    });
+});
+
+// 修改头像
+router.post('/avatar', (req, res, next) => {
+    let _id = req.body.id;
+    let avatar = req.body.avatar;
+    console.log(_id);
+    console.log(avatar);
+
+    User.findOne({
+        _id
+    }).then(userInfo => {
+        if (!userInfo) {
+            responseData.error = 30009;
+            responseData.message = '用户不存在';
+            res.json(responseData);
+            return;
+        }
+        let whereData = {_id};
+        let updateDat = {$set: {"avatar": avatar}}; //如果不用$set，替换整条数据
+        User.update(whereData, updateDat, function (error, result) {
+        });
+
+        responseData.message = '头像修改成功';
+        responseData.data = avatar;
+        res.json(responseData);
     });
 });
 

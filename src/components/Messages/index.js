@@ -71,7 +71,7 @@ class Messages extends React.Component {
                             <Avatar
                                 className={styles.avatar}
                                 alt="Adelle Charles"
-                                src={message.sex === '男' ? config.avatarBoy : config.avatarGirl}
+                                src={message.avatar || (message.sex === '男' ? config.avatarBoy : config.avatarGirl)}
                             />
                             {message.img && <img className={styles.imgMessage} src={message.img} alt=""/>}
                             {/*<div className="message-user"> {`${message.username}:`} </div>*/}
@@ -106,7 +106,7 @@ class Messages extends React.Component {
                             <Avatar
                                 className={styles.avatar}
                                 alt="Adelle Charles"
-                                src={message.sex === '男' ? config.avatarBoy : config.avatarGirl}
+                                src={message.avatar || (message.sex === '男' ? config.avatarBoy : config.avatarGirl)}
                             />
                             {/*<div className="message-user"> {`${message.username}:`} </div>*/}
                             {message.img && <img className={styles.imgMessage} src={message.img} alt=""/>}
